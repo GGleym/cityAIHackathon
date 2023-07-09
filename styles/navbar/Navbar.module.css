@@ -1,0 +1,47 @@
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem;
+    background-color: #000;
+}
+
+.leftPart {
+    display: flex;
+    gap: 5rem;
+}
+
+.links {
+    display: flex;
+    gap: 3.6rem;
+}
+
+.linkItem {
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #FFF;
+}
+
+.activeLink {
+    color: gray;
+}
+
+.rightPart {
+    display: flex;
+    flex-direction: row;
+    color: #FFF;
+    align-items: center;
+}
+
+.rightPart > div {
+    margin-left: 1.2rem;
+}
+
+.officeLink {
+    font-size: 1rem;
+    text-decoration: underline;
+    color: #FFF;
+}

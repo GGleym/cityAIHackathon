@@ -1,0 +1,82 @@
+input[type="checkbox"].toggleCheckbox {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    left: -9000px;
+    top: -9000px;
+}
+
+input[type="checkbox"].toggleCheckbox + label {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    position: relative;
+}
+
+input[type="checkbox"].toggleCheckbox + label::before {
+    content: "";
+    width: 3rem;
+    height: 1.3rem;
+    border: 1px solid gray;
+    border-radius: 0.75rem;
+    margin: .25em;
+    transition: all 250ms ease-in-out;
+}
+
+input[type="checkbox"].toggleCheckbox + label::after {
+    content: "";
+    position: absolute;
+    width: 0.9rem;
+    height: 0.9rem;
+    left: 0.5em;
+    background-color: gray;
+    border-radius: 1em;
+    margin-right: .25em;
+    /*animation-name: reverse;*/
+    /*animation-duration: 350ms;*/
+    /*animation-fill-mode: forwards;*/
+    /*transition: all 350ms ease-in;*/
+}
+
+input[type="checkbox"].toggleCheckbox:checked + label::after {
+    background-color: #FFF;
+    animation: switch 350ms forwards;
+}
+
+
+input[type="checkbox"].toggleCheckbox:checked + label::before {
+    background-color: #8840BB;
+    transition: all 250ms ease-in-out;
+}
+
+
+
+input[type="checkbox"].toggleCheckbox:hover + label::after {
+    transform: scale(1.1);
+    transition: scale 20ms ease-in-out;
+}
+
+@keyframes reverse {
+    0% {
+        width: 0.9rem;
+    }
+    60% {
+        width: 1.3rem;
+    }
+    100% {
+        left: .6em;
+    }
+}
+
+@keyframes switch {
+    0% {
+        left: .6em;
+        width: 0.9rem;
+    }
+    60% {
+        width: 1.3rem
+    }
+    100% {
+        left: 2.2rem;
+    }
+}

@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+input:not([type="radio"]):not([type="checkbox"]) {
+    border-radius: 0.3125rem;
+    outline: none;
+    border: 1px solid #364AF6;
+    padding: 0.6rem;
+    width: calc(3rem + 16vw);
+    font-size: 1rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+    transform: scale(1.5);
+}
+
+button {
+    border: none;
+    transition: all 2ms ease-in-out;
+    background: none;
+    outline: none;
+    border-radius: 6.25rem;
+    padding: 0.62rem 1.88rem;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: black;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.group-enter {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.group-enter-active {
+    max-height: 1000px;
+    transition: max-height 0.6s ease-in-out;
+}
+
+.group-exit {
+    max-height: 1000px;
+}
+
+.group-exit-active {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s cubic-bezier(0,1,0,1);
+}
+
+/*.alert-enter {*/
+/*    opacity: 0;*/
+/*    transform: scale(0.9);*/
+/*}*/
+/*.alert-enter-active {*/
+/*    opacity: 1;*/
+/*    transform: translateX(0);*/
+/*    transition: opacity 300ms, transform 300ms;*/
+/*}*/
+/*.alert-exit {*/
+/*    opacity: 1;*/
+/*}*/
+/*.alert-exit-active {*/
+/*    opacity: 0;*/
+/*    transform: scale(0.9);*/
+/*    transition: opacity 300ms, transform 300ms;*/
+/*}*/
