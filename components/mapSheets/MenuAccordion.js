@@ -54,6 +54,7 @@ MenuAccordion.Group = function MenuGroup({ children, title }) {
           in={activeGroup === title}
           timeout={300}
           classNames={'group'}
+          unmountOnExit
         >
           <div>{children}</div>
         </CSSTransition>
