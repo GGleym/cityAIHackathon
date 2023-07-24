@@ -1,41 +1,134 @@
 import styles from '/styles/map/Map.module.css';
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from 'react';
+import { MapContext } from '../../pages';
+import {
+  cityReducer,
+  CITY_INITIAL_STATE,
+  ACTIONS_CITY
+} from '../../functions/mapFunctions/cityReducer';
+import { SheetsContext } from './CompoundSheets';
+import {
+  parseGeoJsons,
+  processHexes
+} from '../../functions/geoJsonFunctions/geoJSONParser';
+import areasGeoJson from '../../public/geoJSONs/areas.geojson';
+import AsyncSelect from 'react-select/async';
+import { loadOptions } from '../../public/selectOptions';
+import { parseObjects } from '../../functions/geoJsonFunctions/parseObjects';
+
+export const FindCitySheet = () => {
+  const [state, dispatch] = useReducer(cityReducer, CITY_INITIAL_STATE);
+  const { changeCity, changeObjects, cityInfo } = useContext(MapContext);
+  const [selectValue, setSelectValue] = useState(null);
+  const {
+    changeInputValue,
+    setShowFoundBox,
+    setHaveEducation,
+    setNoData,
+    setHaveTourism,
+    setHaveZdrav
+  } = useContext(SheetsContext);
 
 
-export const FindCitySheet = ({ onClick, inputValue }) => {
-  const [value, setValue] = useState(null);
+  const handleChange = async e => {
+    const { bordersData, hexesData } = await parseGeoJsons(e.value);
+    setNoData(true)
+    const features = hexesData.features;
 
-  const handleChange = e => {
-    setValue(e.target.value);
-    inputValue(e.target.value)
+    for (const feature of features) {
+      const { featuresToAdd } = processHexes(feature);
+      if (featuresToAdd.includes('hex_education')) {
+        setHaveEducation(true);
+        setNoData(false);
+      }
+      if (featuresToAdd.includes('hex_tourism')) {
+        setHaveTourism(true);
+        setNoData(false);
+      }
+      if (featuresToAdd.includes('hex_zdrav')) {
+        setHaveZdrav(true);
+        setNoData(false);
+      }
+    }
+
+    setShowFoundBox(true);
+    changeInputValue(e.label);
+    setSelectValue(true);
+
+    const action = {
+      type: ACTIONS_CITY.CHANGE_CITY,
+      payload: {
+        name: bordersData['name'],
+        cityCoordinates:
+          bordersData['features'][0]['geometry']['coordinates'][0][0],
+        region: [bordersData['gicity'], bordersData['District']],
+        population: areasGeoJson[e.label]['number_of_people'],
+        boundaries: bordersData['features'][0]['geometry']['coordinates'],
+        area: bordersData['area'],
+        selectValueName: e.value
+      }
+    };
+    changeCity(cityReducer(state, action));
+    changeObjects(await parseObjects(e.value));
+  };
+
+  const selectStyles = {
+    control: baseStyles => ({
+      ...baseStyles,
+      borderColor: '#D9C7B1',
+      borderRadius: '1.375rem',
+      fontSize: '1rem',
+      padding: '0 2rem'
+    }),
+    menu: baseStyles => ({
+      ...baseStyles,
+      position: 'relative'
+    }),
+    option: (baseStyles, { isActive }) => ({
+      ...baseStyles,
+      borderRadius: '0.5rem',
+      width: '100%',
+      margin: '0 auto',
+      fontSize: '1rem',
+      backgroundColor: isActive ? '#D9C7B1' : 'transparent',
+      color: 'black',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: '#D9C7B1',
+        color: '#FFF'
+      }
+    }),
+    dropdownIndicator: (baseStyles, state) => ({
+      ...baseStyles,
+      transition: 'all .2s ease-in-out',
+      transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'none'
+    })
   };
 
   return (
-    <div className={styles.cityBoxWrapper}>
-      <p>Найдите город для анализа на карте или с помощью поиска</p>
-      <form action="#" className={styles.inputSection}>
-        <input
-          type="text"
-          placeholder={'Город'}
-          onChange={handleChange}
-          value={value}
-        />
-        <button onClick={onClick} disabled={!value}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 7.30435C0 3.27027 3.27027 0 7.30435 0C11.3384 0 14.6087 3.27027 14.6087 7.30435C14.6087 9.13361 13.9363 10.8058 12.8251 12.0873L15.8472 15.1093C16.0509 15.3131 16.0509 15.6434 15.8472 15.8472C15.6434 16.0509 15.3131 16.0509 15.1093 15.8472L12.0873 12.8251C10.8058 13.9363 9.13361 14.6087 7.30435 14.6087C3.27027 14.6087 0 11.3384 0 7.30435ZM7.30435 1.04348C3.84657 1.04348 1.04348 3.84657 1.04348 7.30435C1.04348 10.7621 3.84657 13.5652 7.30435 13.5652C10.7621 13.5652 13.5652 10.7621 13.5652 7.30435C13.5652 3.84657 10.7621 1.04348 7.30435 1.04348Z"
-              fill="white"
-            />
-          </svg>
-        </button>
+    <div className={`${styles.cityBoxWrapper}`}>
+      <form className={styles.formOfFindBox}>
+        {!selectValue && <p>Для анализа выберите город</p>}
+        <div className={styles.inputSection}>
+          <AsyncSelect
+            onChange={handleChange}
+            placeholder={'Название Вашего города'}
+            loadOptions={loadOptions}
+            styles={selectStyles}
+            theme={theme => ({
+              ...theme,
+              borderRadius: '1rem',
+              colors: {
+                ...theme.colors,
+                primary25: '#D9c7B1',
+                primary: '#D9c7B1'
+              }
+            })}
+            noOptionsMessage={() => 'Такого города у нас нет :('}
+            closeMenuOnScroll={true}
+            loadingMessage={() => 'Поиск города...'}
+          />
+        </div>
       </form>
     </div>
   );

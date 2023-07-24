@@ -1,47 +1,60 @@
 .navbar {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.3rem;
-    background-color: #000;
-}
-
-.leftPart {
-    display: flex;
-    gap: 5rem;
-}
-
-.links {
-    display: flex;
-    gap: 3.6rem;
-}
-
-.linkItem {
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: 400;
-    line-height: normal;
-    color: #FFF;
-}
-
-.activeLink {
-    color: gray;
-}
-
-.rightPart {
+    padding: 2rem;
     display: flex;
     flex-direction: row;
-    color: #FFF;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+}
+
+.navbar.darkTheme .headerOfSheets path {
+    fill: var(--btn-black);
+}
+
+.navbar.darkTheme .headerOfSheets button {
+    background-color: var(--back-sheet);
+    color: var(--btn-black);
+}
+
+.panelButton {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem 2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 1.375rem;
+    background-color: var(--btn-black);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FBFBFB;
+}
+
+.panelButton.geoButton svg {
+    transition: all .2s ease;
+}
+
+.panelButton.geoButton:hover svg {
+    transform: translateX(-0.5rem);
+}
+
+
+.headerOfSheets {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
     align-items: center;
 }
 
-.rightPart > div {
-    margin-left: 1.2rem;
-}
 
-.officeLink {
-    font-size: 1rem;
-    text-decoration: underline;
-    color: #FFF;
+.headerOfSheets button:not(.panelButton) {
+    background-color: var(--btn-black);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }

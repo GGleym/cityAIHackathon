@@ -16,8 +16,8 @@ input[type="checkbox"].toggleCheckbox + label {
 input[type="checkbox"].toggleCheckbox + label::before {
     content: "";
     width: 3rem;
+    background-color: #CCC;
     height: 1.3rem;
-    border: 1px solid gray;
     border-radius: 0.75rem;
     margin: .25em;
     transition: all 250ms ease-in-out;
@@ -26,34 +26,31 @@ input[type="checkbox"].toggleCheckbox + label::before {
 input[type="checkbox"].toggleCheckbox + label::after {
     content: "";
     position: absolute;
-    width: 0.9rem;
-    height: 0.9rem;
-    left: 0.5em;
-    background-color: gray;
+    width: 1rem;
+    height: 1rem;
+    left: 0.4em;
+    top: 0.395em;
+    background-color: #FFF;
     border-radius: 1em;
-    margin-right: .25em;
-    /*animation-name: reverse;*/
-    /*animation-duration: 350ms;*/
-    /*animation-fill-mode: forwards;*/
-    /*transition: all 350ms ease-in;*/
+    transition: all .1s ease;
 }
 
 input[type="checkbox"].toggleCheckbox:checked + label::after {
     background-color: #FFF;
-    animation: switch 350ms forwards;
+    left: 2.1rem;
+    /*animation: switch 350ms forwards;*/
 }
 
 
 input[type="checkbox"].toggleCheckbox:checked + label::before {
     background-color: #8840BB;
-    transition: all 250ms ease-in-out;
+    /*transition: all 250ms ease-in-out;*/
 }
-
 
 
 input[type="checkbox"].toggleCheckbox:hover + label::after {
     transform: scale(1.1);
-    transition: scale 20ms ease-in-out;
+    /*transition: scale 20ms ease-in-out;*/
 }
 
 @keyframes reverse {
@@ -64,7 +61,7 @@ input[type="checkbox"].toggleCheckbox:hover + label::after {
         width: 1.3rem;
     }
     100% {
-        left: .6em;
+        left: .4em;
     }
 }
 
@@ -77,6 +74,6 @@ input[type="checkbox"].toggleCheckbox:hover + label::after {
         width: 1.3rem
     }
     100% {
-        left: 2.2rem;
+        left: 2.1rem;
     }
 }

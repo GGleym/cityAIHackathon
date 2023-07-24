@@ -1,0 +1,77 @@
+.profileTab button {
+    background-color: var(--btn-black);
+    color: #FFF;
+    padding: 1rem;
+    z-index: 10;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: normal;
+    position: relative;
+    transition: all 100ms ease-in-out;
+}
+
+.profileTab.activeMenu button {
+    transform: translate(-1.9rem, 1.6rem);
+}
+
+.profileTab.darkTheme button {
+    background-color: var(--back-sheet);
+    backdrop-filter: blur(8px);
+    color: var(--btn-black);
+}
+
+.profileTab {
+    position: relative;
+}
+
+.profileMainMenu {
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: max-content;
+    position: absolute;
+    background-color: var(--back-sheet);
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    padding: 1.5rem 2rem;
+    transform: scale(0);
+    opacity: 0;
+    transition: all 200ms ease-in-out;
+    transform-origin: top right;
+}
+
+.showMenu {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.profileMainMenu a {
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    color: #000;
+}
+
+.upperOfProfile {
+    margin-bottom: 1rem;
+}
+
+
+@keyframes showMenu {
+    0% {
+        opacity: 0;
+        transform: scale(0)
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
