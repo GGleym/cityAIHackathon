@@ -14,6 +14,7 @@ const MapSection = () => {
   const [objToggles, setObjToggles] = useState({});
   const [objectsOfCity, setObjectsOfCity] = useState();
   const [typeOfMap, setTypeOfMap] = useState(1);
+  const [numberOfLayer, setNumberOfLayer] = useState()
 
   const changeCity = useCallback(
     info => {
@@ -43,7 +44,9 @@ const MapSection = () => {
         setTypeOfMap,
         typeOfMap,
         objectsOfCity,
-        changeObjects
+        changeObjects,
+          numberOfLayer,
+          setNumberOfLayer
       }}
     >
       <SRMap />
