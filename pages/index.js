@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { CITY_INITIAL_STATE } from '../functions/mapFunctions/cityReducer';
 import { CompoundSheets } from '../components/mapSheets/CompoundSheets';
-import dynamic from 'next/dynamic';
 import { MainPanel } from '../components/panelSheets/MainPanel';
 import {InfoHexSheet} from "../components/mapSheets/InfoHexSheet";
 
+import dynamic from 'next/dynamic';
 const SRMap = dynamic(() => import('../pages/map/Map'), { ssr: false });
 
 export const MapContext = React.createContext({});
@@ -45,8 +45,8 @@ const MapSection = () => {
         typeOfMap,
         objectsOfCity,
         changeObjects,
-          numberOfLayer,
-          setNumberOfLayer
+        numberOfLayer,
+        setNumberOfLayer
       }}
     >
       <SRMap />

@@ -116,7 +116,7 @@ export const FindCitySheet = () => {
           <AsyncSelect
             instanceId={'findBoxSelect'}
             onChange={handleChange}
-            placeholder={'Название Вашего города'}
+            placeholder={'Название города'}
             loadOptions={loadOptions}
             styles={selectStyles}
             theme={theme => ({

@@ -20,7 +20,7 @@ const ICON_MAPPING = {
   marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
 };
 
-export default function MainMap() {
+const MainMap = () => {
   const { cityInfo, objToggles, typeOfMap, objectsOfCity, numberOfLayer } =
     useContext(MapContext);
   const [layersOfMaps, setLayersOfMaps] = useState();
@@ -379,3 +379,6 @@ export default function MainMap() {
     </>
   );
 }
+
+
+export default MainMap
