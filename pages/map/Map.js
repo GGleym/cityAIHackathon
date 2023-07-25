@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-
-const MapGL = (await import("react-map-gl")).Map
-
-import dynamic from 'next/dynamic';
-
-const DeckGL = dynamic(() => import('deck.gl'), { ssr: false });
-const GeoJsonLayer = (await import("deck.gl")).GeoJsonLayer
-const PathLayer = (await import("deck.gl")).PathLayer
-const SolidPolygonLayer = (await import("deck.gl")).SolidPolygonLayer
-const PolygonLayer =  (await import("deck.gl")).PolygonLayer
-const IconLayer = (await import("deck.gl")).IconLayer
+import MapGL from "react-map-gl"
+import DeckGL from "@deck.gl/react";
+import {
+  GeoJsonLayer,
+    PathLayer,
+    SolidPolygonLayer,
+    PolygonLayer,
+    IconLayer
+} from "@deck.gl/layers";
 
 import { MapContext } from '../index';
 import 'mapbox-gl/dist/mapbox-gl.css';
