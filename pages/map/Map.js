@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import MapGL from 'react-map-gl';
-import DeckGL, {
-  GeoJsonLayer,
-  PathLayer,
-  IconLayer,
-  SolidPolygonLayer,
-  PolygonLayer
-} from 'deck.gl';
+const DeckGL = (await import("deck.gl")).DeckGL
+const GeoJsonLayer = (await import("deck.gl")).GeoJsonLayer
+const PathLayer = (await import("deck.gl")).PathLayer
+const IconLayer = (await import("deck.gl")).IconLayer
+const SolidPolygonLayer = (await import("deck.gl")).SolidPolygonLayer
+const PolygonLayer = (await import("deck.gl")).PolygonLayer
 import { MapContext } from '../index';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { NavbarContext } from '../../components/layouts/Main';
