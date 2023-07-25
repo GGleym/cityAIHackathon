@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "next build",
+    "build": "next build && next export",
     "prettier": "prettier -write .",
     "lint": "next lint"
   },
@@ -20,10 +20,7 @@
   "description": "CityAi Hackathon",
   "dependencies": {
     "@deck.gl/layers": "^8.9.21",
-    "@deck.gl/mapbox": "^8.9.21",
     "@deck.gl/react": "^8.9.21",
-    "@mapbox/mapbox-gl-draw": "^1.4.2",
-    "@pbe/react-yandex-maps": "^1.2.4",
     "deck.gl": "^8.9.21",
     "libphonenumber-js": "^1.10.37",
     "mapbox-gl": "^2.15.0",
