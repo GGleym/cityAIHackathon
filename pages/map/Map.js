@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import MapGL from 'react-map-gl/dist/esm';
+import MapGL from 'react-map-gl';
 import DeckGL from '@deck.gl/react/dist/esm';
 import {
   GeoJsonLayer,
