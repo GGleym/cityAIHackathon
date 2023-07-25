@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import MapGL from 'react-map-gl';
+
+const MapGL = (await import("react-map-gl")).Map
+
 import dynamic from 'next/dynamic';
 
 const DeckGL = dynamic(() => import('deck.gl'), { ssr: false });
+const GeoJsonLayer = (await import("deck.gl")).GeoJsonLayer
+const PathLayer = (await import("deck.gl")).PathLayer
+const SolidPolygonLayer = (await import("deck.gl")).SolidPolygonLayer
+const PolygonLayer =  (await import("deck.gl")).PolygonLayer
+const IconLayer = (await import("deck.gl")).IconLayer
 
 import { MapContext } from '../index';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { NavbarContext } from '../../components/layouts/Main';
 import roads from '../../public/geoJSONs/roads/город_Архангельск.geojson';
 import { getDifferentHexes } from '../../functions/getDifferentHexes';
-const {
-  GeoJsonLayer,
-  PathLayer,
-  IconLayer,
-  SolidPolygonLayer,
-  PolygonLayer
-} = await import("deck.gl");
 
 const ACCESS_TOKEN =
   'pk.eyJ1IjoiZ2dsZXltIiwiYSI6ImNsazQxdTdxbjA2aTEzbXJ5dTQxM2t4eTcifQ.WkaIkLWY8zNsBJOAbhEc0Q';
