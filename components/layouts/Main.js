@@ -30,7 +30,7 @@ const Main = ({ children, router }) => {
       </Head>
 
       <NavbarContext.Provider
-        value={{ showPanel, getPanel, showSheets, getSheets, theme, setTheme }}
+        value={{ showPanel, getPanel, showSheets, getSheets, theme, setTheme, loader, setLoader }}
       >
         <Navbar />
         {children}

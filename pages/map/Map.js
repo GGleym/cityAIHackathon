@@ -22,7 +22,6 @@ const ICON_MAPPING = {
 };
 
 export default function MainMap() {
-  const [mapLoaded, setMapLoaded] = useState(true);
   const { cityInfo, objToggles, typeOfMap, objectsOfCity, numberOfLayer } =
     useContext(MapContext);
   const [layersOfMaps, setLayersOfMaps] = useState();
@@ -30,7 +29,7 @@ export default function MainMap() {
     'mapbox://styles/ggleym/clk5rokki009q01pg1o351shx'
   );
   const [layers, setLayers] = useState([]);
-  const { setTheme } = useContext(NavbarContext);
+  const { setTheme, setLoader } = useContext(NavbarContext);
   const [initialViewState, setInitialViewState] = useState({
     latitude: cityInfo['cityCoordinates'][0],
     longitude: cityInfo['cityCoordinates'][1],
@@ -38,11 +37,6 @@ export default function MainMap() {
     bearing: 0,
     pitch: 10
   });
-  const [defaultFeatures, setDefaultFeatures] = useState(
-
-  )
-  const [zdravFeatures, setZdravFeatures] = useState()
-
 
   useLayoutEffect(() => {
     setInitialViewState({
@@ -62,6 +56,12 @@ export default function MainMap() {
     if (typeOfMap === 1) {
       setMapStyle('mapbox://styles/ggleym/clk5rokki009q01pg1o351shx');
       setTheme('white');
+      setLayers([]);
+
+      for (let key of Object.keys(objToggles)) {
+        objToggles[key] = false;
+      }
+
       setLayersOfMaps(
         new PolygonLayer({
           id: 'borderLayer',
@@ -78,6 +78,12 @@ export default function MainMap() {
     } else if (typeOfMap === 2) {
       setMapStyle('mapbox://styles/ggleym/clkfcheba005701pbc3882oar');
       setTheme('black');
+      setLayers([]);
+
+      for (let key of Object.keys(objToggles)) {
+        objToggles[key] = false;
+      }
+
       setLayersOfMaps(
         new PathLayer({
           data: roads.features,
@@ -93,6 +99,12 @@ export default function MainMap() {
     } else if (typeOfMap === 3) {
       setMapStyle('mapbox://styles/ggleym/clkfcpdcm004301qydbqx1fe2');
       setTheme('black');
+      setLayers([]);
+
+      for (let key of Object.keys(objToggles)) {
+        objToggles[key] = false;
+      }
+
       if (cityInfo['name'] === 'Архангельск') {
         setInitialViewState({
           ...initialViewState,
@@ -117,7 +129,8 @@ export default function MainMap() {
               pointType: 'circle',
               lineWidthScale: 10,
               lineWidthMinPixels: 2,
-              getFillColor: [160, 160, 180, 200],
+              getFillColor: d =>
+                d.properties.year > 1960 ? [255, 0, 0, 255] : [0, 255, 0, 255],
               getPointRadius: 10,
               getLineWidth: 1,
               getElevation: 30
@@ -125,23 +138,131 @@ export default function MainMap() {
           );
         })();
       }
-    } else if (typeOfMap === 4) {
+    }
+  }, [typeOfMap, cityInfo]);
+
+  useEffect(() => {
+    if (typeOfMap === 4) {
       setMapStyle('mapbox://styles/ggleym/clkgs5q2b007e01pcd4iq4bhd');
       setTheme('black');
+      setLayers([]);
+
+      // for (let key of Object.keys(objToggles)) { //это нужно убрать, если
+      //   objToggles[key] = false;                //хотим, чтобы цветы сливались
+      // }
 
       (async function () {
-
-        const {features, tourismFeatures, zdravFeatures, educationFeatures, ETFeatures, EZFeatures, ZTFeatures, ZTEFeatures} = await getDifferentHexes(cityInfo["selectValueName"])
-
-        setDefaultFeatures(features)
-        setZdravFeatures(zdravFeatures)
-      })()
-      console.log(defaultFeatures)
+        const {
+          features,
+          tourismFeatures,
+          zdravFeatures,
+          educationFeatures,
+          ETFeatures,
+          EZFeatures,
+          ZTFeatures,
+          ZTEFeatures
+        } = await getDifferentHexes(cityInfo['selectValueName']);
 
         const layers = [
-
           {
-            hexName: 'zdravFeatures',
+            layer: new SolidPolygonLayer({
+              data: features,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: ZTEFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: ETFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: ZTFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: EZFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: tourismFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
+            layer: new SolidPolygonLayer({
+              data: educationFeatures,
+              extruded: true,
+              filled: true,
+              getLineColor: [255, 255, 255, 255],
+              wireframe: true,
+              fillColor: [100, 100, 100, 100],
+              elevationScale: 10,
+              getFillColor: d => d.color || [100, 100, 100, 100],
+              getElevation: 1,
+              getPolygon: d => d['geometry']['coordinates']
+            })
+          },
+          {
             layer: new SolidPolygonLayer({
               data: zdravFeatures,
               extruded: true,
@@ -156,23 +277,10 @@ export default function MainMap() {
             })
           }
         ];
-
-      console.log(defaultFeatures)
-
-      const initialHexLayer = new SolidPolygonLayer({
-        data: defaultFeatures,
-        extruded: true,
-        filled: true,
-        getLineColor: [255, 255, 255, 255],
-        wireframe: true,
-        getFillColor: [255, 255, 255, 50],
-        getElevation: 1,
-        getPolygon: d => d['geometry']['coordinates']
-      })
-
-      setLayersOfMaps([initialHexLayer, layers[numberOfLayer].layer]);
+        setLayersOfMaps([layers[numberOfLayer].layer]);
+      })();
     }
-  }, [typeOfMap, cityInfo, objToggles]);
+  }, [objToggles, typeOfMap]);
 
   useEffect(() => {
     function addLayers(objOfFeatureOfToggles) {
@@ -191,13 +299,13 @@ export default function MainMap() {
             id: 'educationIcons',
             data: objectsOfCity && objectsOfCity.objectsEducation.features,
             pickable: true,
-            iconAtlas: 'https://img.icons8.com/?size=100&id=73815&format=png',
             iconMapping: ICON_MAPPING,
+            iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
             getIcon: d => 'marker',
             getPosition: d => d.geometry.coordinates,
             sizeScale: 10,
-            getSize: 3,
-            getColor: [0, 0, 0, 200]
+            getSize: 4,
+            getColor: [0, 255, 0, 150]
           })
         },
         {
@@ -206,14 +314,13 @@ export default function MainMap() {
             id: 'tourismIcons',
             data: objectsOfCity && objectsOfCity.objectsTourism.features,
             pickable: true,
-            iconAtlas:
-              'https://img.icons8.com/?size=100&id=7oEDRZeazDGp&format=png',
             iconMapping: ICON_MAPPING,
+            iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
             getIcon: d => 'marker',
             getPosition: d => d.geometry.coordinates,
             sizeScale: 10,
-            getSize: 3,
-            getColor: [0, 0, 0, 200]
+            getSize: 4,
+            getColor: [0, 0, 255, 150]
           })
         },
         {
@@ -222,13 +329,13 @@ export default function MainMap() {
             id: 'icon-layer',
             data: objectsOfCity && objectsOfCity.objectsZdrav.features,
             pickable: true,
-            iconAtlas: 'https://img.icons8.com/?size=100&id=87&format=png',
             iconMapping: ICON_MAPPING,
+            iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
             getIcon: d => 'marker',
             getPosition: d => d.geometry.coordinates,
             sizeScale: 10,
-            getSize: 3,
-            getColor: [0, 0, 0, 200]
+            getSize: 4,
+            getColor: [255, 0, 0, 150]
           })
         }
       ];
@@ -240,35 +347,23 @@ export default function MainMap() {
         .map(item => item['layer']);
     }
 
-
     setLayers(addLayers(objToggles));
   }, [objToggles]);
 
-  if (typeOfMap === 3) {
-    var getTooltip = ({ object }) =>
-      object && {
-        html: `${object['properties']['year']}`,
-        style: {
-          fontSize: '1rem'
-        }
-      };
-  } else {
-    var getTooltip = ({ object }) =>
-      object && {
-        html: `<h1>${object.properties.name}</h1>`,
-        style: {
-          backgroundColor: '#000',
-          fontSize: '0.4rem',
-          position: 'absolute',
-          lineHeight: '50%',
-          width: 'fit-content'
-        }
-      };
-  }
+  const getTooltip = ({ object }) =>
+    object && {
+      html: `<h1>${
+        object.properties.name || object['properties']['year']
+      }</h1><h1>${object['properties']['street'] ? 'улица: ' : ''}${
+        object['properties']['street'] ? object['properties']['street'] : ''
+      }</h1>`,
+      style: {
+        fontSize: '0.4rem'
+      }
+    };
 
   return (
     <>
-      <MapLoader loading={mapLoaded} />
       <DeckGL
         initialViewState={initialViewState}
         controller={true}
@@ -279,7 +374,7 @@ export default function MainMap() {
         <MapGL
           mapboxAccessToken={ACCESS_TOKEN}
           mapStyle={mapStyle}
-          onLoad={() => setMapLoaded(false)}
+          onLoad={() => setLoader(false)}
         />
       </DeckGL>
     </>

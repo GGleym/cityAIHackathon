@@ -1,4 +1,5 @@
 import styles from '/styles/map/Map.module.css';
+import toggleStyles from "/styles/Toggle.module.css"
 import {
   useContext,
   useEffect,
@@ -17,8 +18,14 @@ import {
 } from '../../functions/toggleReducer/toggleReducer';
 
 export const FoundCitySheet = () => {
-  const { cityInfo, changeLayers, setTypeOfMap, typeOfMap, setNumberOfLayer } =
-    useContext(MapContext);
+  const {
+    objToggles,
+    cityInfo,
+    changeLayers,
+    setTypeOfMap,
+    typeOfMap,
+    setNumberOfLayer
+  } = useContext(MapContext);
   const {
     showFoundBox,
     haveTourism,
@@ -28,7 +35,7 @@ export const FoundCitySheet = () => {
     noData
   } = useContext(SheetsContext);
   const [state, dispatch] = useReducer(toggleReducer, TOGGLE_INITIAL);
-  const [activeButton, setActiveButton] = useState(1)
+  const [activeButton, setActiveButton] = useState(1);
 
   const handleToggleChange = e => {
     if (typeOfMap === 4) {
@@ -50,11 +57,8 @@ export const FoundCitySheet = () => {
     }
   };
 
-
   switch (true) {
-    case state['hex_zdrav'] &&
-    state['hex_education'] &&
-    state['hex_tourism']: {
+    case state['hex_zdrav'] && state['hex_education'] && state['hex_tourism']: {
       setNumberOfLayer(1);
       break;
     }
@@ -79,13 +83,12 @@ export const FoundCitySheet = () => {
       break;
     }
     case state['hex_zdrav']: {
-      setNumberOfLayer(0);
+      setNumberOfLayer(7);
       break;
     }
     default:
       setNumberOfLayer(0);
   }
-
   changeLayers(state);
 
   return (
@@ -279,6 +282,8 @@ export const FoundCitySheet = () => {
                   name={'objects_zdrav'}
                   id={'hex_zdrav'}
                   handleToggleChange={handleToggleChange}
+                  checked={objToggles["hex_zdrav"] || objToggles['objects_zdrav']}
+                  className={toggleStyles.zdrav}
                 />
               </div>
             )}
@@ -305,6 +310,8 @@ export const FoundCitySheet = () => {
                   name={'objects_tourism'}
                   id={'hex_tourism'}
                   handleToggleChange={handleToggleChange}
+                  checked={objToggles["hex_tourism"] || objToggles['objects_tourism']}
+                  className={toggleStyles.tourism}
                 />
               </div>
             )}
@@ -331,6 +338,8 @@ export const FoundCitySheet = () => {
                   name={'objects_education'}
                   id={'hex_education'}
                   handleToggleChange={handleToggleChange}
+                  checked={objToggles["hex_education"] || objToggles['objects_education']}
+                  className={toggleStyles.education}
                 />
               </div>
             )}

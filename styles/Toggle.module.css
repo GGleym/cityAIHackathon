@@ -42,11 +42,20 @@ input[type="checkbox"].toggleCheckbox:checked + label::after {
 }
 
 
-input[type="checkbox"].toggleCheckbox:checked + label::before {
-    background-color: #8840BB;
+input[type="checkbox"].toggleCheckbox:checked.zdrav + label::before {
+    background-color: rgba(255, 0, 0, 100);
     /*transition: all 250ms ease-in-out;*/
 }
 
+input[type="checkbox"].toggleCheckbox:checked.education + label::before {
+    background-color: rgba(0, 255, 0, 100);
+    /*transition: all 250ms ease-in-out;*/
+}
+
+input[type="checkbox"].toggleCheckbox:checked.tourism + label::before {
+    background-color: rgba(0, 0, 255, 100);
+    /*transition: all 250ms ease-in-out;*/
+}
 
 input[type="checkbox"].toggleCheckbox:hover + label::after {
     transform: scale(1.1);

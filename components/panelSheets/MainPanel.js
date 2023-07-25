@@ -3,9 +3,15 @@ import Select from "react-select";
 import {PanelSheet} from "./PanelSheet";
 import {useContext} from "react";
 import {NavbarContext} from "../layouts/Main";
+import cities from "../../public/geoJSONs/areas.geojson"
 
 export const MainPanel = () => {
     const {showPanel} = useContext(NavbarContext)
+    let setOfCities = new Set()
+
+    for (let key of Object.keys(cities)) {
+        setOfCities.add(key)
+    }
 
     const panelSelectStyles = {
         control: baseStyles => ({
@@ -78,14 +84,15 @@ export const MainPanel = () => {
                 />
             </div>
             <div className={styles.gridPanel}>
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
-                <PanelSheet />
+                {
+                    [...setOfCities].map((item, index) => (
+                        index < 20 && <PanelSheet
+                            cityName={item}
+                            numberOfPeople={cities[item]["number_of_people"]}
+                            area={(cities[item]["area"] * 10000).toFixed(2)}
+                        />
+                    ))
+                }
             </div>
         </div>
     )
