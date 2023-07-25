@@ -1,5 +1,9 @@
 import styles from '/styles/map/Map.module.css';
-import React, {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from 'react';
+import React, {
+  useContext,
+  useReducer,
+  useState
+} from 'react';
 import { MapContext } from '../../pages';
 import {
   cityReducer,
@@ -29,10 +33,9 @@ export const FindCitySheet = () => {
     setHaveZdrav
   } = useContext(SheetsContext);
 
-
   const handleChange = async e => {
     const { bordersData, hexesData } = await parseGeoJsons(e.value);
-    setNoData(true)
+    setNoData(true);
     const features = hexesData.features;
 
     for (const feature of features) {
@@ -111,6 +114,7 @@ export const FindCitySheet = () => {
         {!selectValue && <p>Для анализа выберите город</p>}
         <div className={styles.inputSection}>
           <AsyncSelect
+            instanceId={'findBoxSelect'}
             onChange={handleChange}
             placeholder={'Название Вашего города'}
             loadOptions={loadOptions}

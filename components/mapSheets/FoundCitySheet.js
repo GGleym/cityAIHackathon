@@ -2,8 +2,6 @@ import styles from '/styles/map/Map.module.css';
 import toggleStyles from "/styles/Toggle.module.css"
 import {
   useContext,
-  useEffect,
-  useLayoutEffect,
   useReducer,
   useState
 } from 'react';

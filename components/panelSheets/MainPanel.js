@@ -66,6 +66,7 @@ export const MainPanel = () => {
             <div className={styles.upperPanel}>
                 <h1>Обзорная панель</h1>
                 <Select
+                    instanceId={"panelSelect"}
                     placeholder={'Выберите город'}
                     options={options}
                     // onChange={handleChange}

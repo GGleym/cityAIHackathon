@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from '/styles/office/Office.module.css';
 
 export const ShowMoreButton = ({ onClick, svgStatus, text }) => {

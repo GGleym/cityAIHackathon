@@ -1,13 +1,11 @@
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
-import { MapContext } from '../../pages';
+import React, { useContext } from 'react';
 import styles from '../../styles/navbar/Navbar.module.css';
 import { ProfileButton } from '../mapSheets/ProfileButton';
 import { NavbarContext } from '../layouts/Main';
 import { MapLoader } from '../loader/MapLoader';
 
-export const LinkItem = ({ path, href, children, className }) => {
-  const activeItem = path === href;
+export const LinkItem = ({ path, href, children }) => {
 
   return (
     <Link href={href} className={`${styles.linkItem}`}>

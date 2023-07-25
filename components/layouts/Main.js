@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import { Navbar } from '../navbar/Navbar';
 import { useState, createContext, useCallback } from 'react';
-import {MapLoader} from "../loader/MapLoader";
 
 export const NavbarContext = createContext();
 
-const Main = ({ children, router }) => {
+const Main = ({ children }) => {
   const [showPanel, setShowPanel] = useState(null);
   const [showSheets, setShowSheets] = useState(true);
   const [theme, setTheme] = useState('white');
@@ -26,7 +25,7 @@ const Main = ({ children, router }) => {
           name={'viewport'}
           content={'width=device-width, initial-scale=1, maximum-scale=1'}
         />
-        <title>SR Space</title>
+        <title>City AI</title>
       </Head>
 
       <NavbarContext.Provider

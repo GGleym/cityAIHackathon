@@ -9,7 +9,6 @@ import DeckGL, {
 } from 'deck.gl';
 import { MapContext } from '../index';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { MapLoader } from '../../components/loader/MapLoader';
 import { NavbarContext } from '../../components/layouts/Main';
 import roads from '../../public/geoJSONs/roads/город_Архангельск.geojson';
 import { getDifferentHexes } from '../../functions/getDifferentHexes';

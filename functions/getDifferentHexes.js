@@ -1,6 +1,3 @@
-
-
-
 export const getDifferentHexes = async (cityName) => {
    const getHexes = await fetch(`/geoJSONs/hexes/${cityName}.geojson`)
     const responseHexes = await getHexes.json()
