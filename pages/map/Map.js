@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MapGL from 'react-map-gl';
 import DeckGL, {
   GeoJsonLayer,
