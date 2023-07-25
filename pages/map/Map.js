@@ -37,7 +37,7 @@ export default function MainMap() {
     pitch: 10
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setInitialViewState({
       ...initialViewState,
       latitude: cityInfo['cityCoordinates'][1],

@@ -19,7 +19,7 @@ export const CompoundSheets = () => {
     value => {
       setInputValue(value);
     },
-    [inputValue]
+    []
   );
 
   return (

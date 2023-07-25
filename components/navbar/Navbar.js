@@ -5,7 +5,7 @@ import { ProfileButton } from '../mapSheets/ProfileButton';
 import { NavbarContext } from '../layouts/Main';
 import { MapLoader } from '../loader/MapLoader';
 
-export const LinkItem = ({ path, href, children }) => {
+export const LinkItem = ({ href, children }) => {
 
   return (
     <Link href={href} className={`${styles.linkItem}`}>
@@ -14,7 +14,7 @@ export const LinkItem = ({ path, href, children }) => {
   );
 };
 
-export const Navbar = props => {
+export const Navbar = () => {
   const { showPanel, getPanel, getSheets, showSheets, theme, loader } =
     useContext(NavbarContext);
 

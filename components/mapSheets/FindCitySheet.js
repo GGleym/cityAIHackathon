@@ -21,8 +21,8 @@ import { loadOptions } from '../../public/selectOptions';
 import { parseObjects } from '../../functions/geoJsonFunctions/parseObjects';
 
 export const FindCitySheet = () => {
-  const [state, dispatch] = useReducer(cityReducer, CITY_INITIAL_STATE);
-  const { changeCity, changeObjects, cityInfo } = useContext(MapContext);
+  const [state, ] = useReducer(cityReducer, CITY_INITIAL_STATE);
+  const { changeCity, changeObjects } = useContext(MapContext);
   const [selectValue, setSelectValue] = useState(null);
   const {
     changeInputValue,

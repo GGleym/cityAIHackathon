@@ -1,7 +1,7 @@
 import styles from '/styles/office/Office.module.css';
 import { DataIcon } from '../../public/DataIcon';
 import { InputType } from '../../components/officePage/InputType';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ShowMoreButton } from '../../components/officePage/ShowMoreButton';
 import { useReducer } from 'react';
 import {
@@ -21,7 +21,7 @@ import { ButtonSection } from '../../components/officePage/ButtonSection';
 
 const Office = () => {
   const [more, setMore] = useState(null);
-  const [state, dispatch] = useReducer(officeReducer, INITIAL_STATE);
+  const [, dispatch] = useReducer(officeReducer, INITIAL_STATE);
   const [issuedBy, setIssuedBy] = useState(null);
 
   function handleChange(e) {
@@ -37,8 +37,6 @@ const Office = () => {
       }
     });
   }
-
-  console.log(state)
 
   const handleSubmit = () => {
     //something

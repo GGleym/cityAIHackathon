@@ -20,7 +20,7 @@ const MapSection = () => {
     info => {
       setCityInfo(info);
     },
-    [cityInfo]
+    []
   );
 
   const changeLayers = useCallback(layer => {
@@ -31,7 +31,7 @@ const MapSection = () => {
     objectOfObjects => {
       setObjectsOfCity(objectOfObjects);
     },
-    [cityInfo]
+    []
   );
 
   return (

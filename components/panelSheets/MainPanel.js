@@ -88,6 +88,7 @@ export const MainPanel = () => {
                 {
                     [...setOfCities].map((item, index) => (
                         index < 20 && <PanelSheet
+                            key={index}
                             cityName={item}
                             numberOfPeople={cities[item]["number_of_people"]}
                             area={(cities[item]["area"] * 10000).toFixed(2)}

@@ -4,7 +4,7 @@ import { LinkItem } from '../navbar/Navbar';
 import {NavbarContext} from "../layouts/Main";
 
 export const ProfileButton = () => {
-  const [userName, setUserName] = useState('CA');
+  const [userName, ] = useState('CA');
   const [expandTab, setExpandTab] = useState(null);
   const {theme} = useContext(NavbarContext);
 
