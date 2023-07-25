@@ -12,7 +12,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { MapLoader } from '../../components/loader/MapLoader';
 import { NavbarContext } from '../../components/layouts/Main';
 import roads from '../../public/geoJSONs/roads/город_Архангельск.geojson';
-import {getDifferentHexes} from '../../functions/getDifferentHexes';
+import { getDifferentHexes } from '../../functions/getDifferentHexes';
 
 const ACCESS_TOKEN =
   'pk.eyJ1IjoiZ2dsZXltIiwiYSI6ImNsazQxdTdxbjA2aTEzbXJ5dTQxM2t4eTcifQ.WkaIkLWY8zNsBJOAbhEc0Q';
@@ -38,13 +38,11 @@ export default function MainMap() {
     bearing: 0,
     pitch: 10
   });
-  const [educationFeatures, setEducationFeatures] = useState()
-  const [tourismFeatures, setTourismFeatures] = useState()
+  const [defaultFeatures, setDefaultFeatures] = useState(
+
+  )
   const [zdravFeatures, setZdravFeatures] = useState()
-  const [etFeatures, setETFeatures] = useState()
-  const [ezFeatures, setEZFeatures] = useState()
-  const [ztFeatures, setZTFeatures] = useState()
-  const [zteFeatures, setZTEFeatures] = useState()
+
 
   useLayoutEffect(() => {
     setInitialViewState({
@@ -128,223 +126,22 @@ export default function MainMap() {
         })();
       }
     } else if (typeOfMap === 4) {
-      // const {educationFeatures} = getDifferentHexes(cityInfo['selectValueName']);
-      //
-      // console.log(educationFeatures)
       setMapStyle('mapbox://styles/ggleym/clkgs5q2b007e01pcd4iq4bhd');
       setTheme('black');
 
-
       (async function () {
 
-        const getHexes = await fetch(`/geoJSONs/hexes/${cityInfo["selectValueName"]}.geojson`)
-        const responseHexes = await getHexes.json()
+        const {features, tourismFeatures, zdravFeatures, educationFeatures, ETFeatures, EZFeatures, ZTFeatures, ZTEFeatures} = await getDifferentHexes(cityInfo["selectValueName"])
 
-        const features = responseHexes.features
-
-        const educationFeatures = JSON.parse(JSON.stringify(features))
-        const tourismFeatures = JSON.parse(JSON.stringify(features))
-        const zdravFeatures = JSON.parse(JSON.stringify(features))
-        const ETFeatures = JSON.parse(JSON.stringify(features)) //education and tourism toggles
-        const EZFeatures = JSON.parse(JSON.stringify(features)) //education and zdrav toggles
-        const ZTFeatures = JSON.parse(JSON.stringify(features)) //zdrav and tourism toggles
-        const ZTEFeatures = JSON.parse(JSON.stringify(features)) //zdrav and tourism and education toggles
-
-        const changeEducation = (feature) => {
-          let objOfFeature = feature.properties
-          for (let key of Object.keys(objOfFeature)) {
-            if (objOfFeature["hex_education"]) {
-              feature.color = [0, 255, 0, 100]
-            }
-          }
-        }
-        const changeTourism = (feature) => {
-          let objOfFeature = feature.properties
-          for (let key of Object.keys(objOfFeature)) {
-            if (objOfFeature["hex_tourism"]) {
-              feature.color = [0, 0, 255, 100]
-            }
-          }
-        }
-        const changeZdrav = (feature) => {
-          let objOfFeature = feature.properties
-          for (let key of Object.keys(objOfFeature)) {
-            if (objOfFeature["hex_zdrav"]) {
-              feature.color = [255, 0, 0, 100]
-            }
-          }
-        }
-        const changeET = (feature) => {
-            let objOfFeature = feature.properties
-            for (let key of Object.keys(objOfFeature)) {
-                if (objOfFeature["hex_education"] && objOfFeature["hex_tourism"]) {
-                    feature.color = [0, 255, 255, 255]
-                }
-            }
-        }
-        const changeEZ = (feature) => {
-            let objOfFeature = feature.properties
-            for (let key of Object.keys(objOfFeature)) {
-                if (objOfFeature["hex_education"] && objOfFeature["hex_zdrav"]) {
-                    feature.color = [255, 255, 0, 255]
-                }
-            }
-        }
-        const changeZT = (feature) => {
-            let objOfFeature = feature.properties
-            for (let key of Object.keys(objOfFeature)) {
-                if (objOfFeature["hex_zdrav"] && objOfFeature["hex_tourism"]) {
-                    feature.color = [255, 0, 255, 255]
-                }
-            }
-        }
-        const changeZTE = (feature) => {
-            let objOfFeature = feature.properties
-            for (let key of Object.keys(objOfFeature)) {
-                if (objOfFeature["hex_education"] && objOfFeature["hex_zdrav"] && objOfFeature["hex_tourism"]) {
-                    feature.color = [255, 255, 255, 100]
-                }
-            }
-        }
-
-        for (const feature of educationFeatures) {
-          changeEducation(feature)
-        }
-        for (const feature of tourismFeatures) {
-          changeTourism(feature)
-        }
-        for (const feature of zdravFeatures) {
-          changeZdrav(feature)
-        }
-        for (const feature of ETFeatures) {
-            changeET(feature)
-        }
-        for (const feature of EZFeatures) {
-            changeEZ(feature)
-        }
-        for (const feature of ZTFeatures) {
-            changeZT(feature)
-        }
-        for (const feature of ZTEFeatures) {
-            changeZTE(feature)
-        }
-
-        setEducationFeatures(educationFeatures)
-        setTourismFeatures(tourismFeatures)
+        setDefaultFeatures(features)
         setZdravFeatures(zdravFeatures)
-        setETFeatures(ETFeatures)
-        setEZFeatures(EZFeatures)
-        setZTFeatures(ZTFeatures)
-        setZTEFeatures(ZTEFeatures)
       })()
-
-
-      const addHexLayers = () => {
+      console.log(defaultFeatures)
 
         const layers = [
+
           {
-            hexName: "default",
-            layer: new SolidPolygonLayer({
-              data: educationFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              fillColor: [100, 100, 100, 100],
-              getFillColor: [255, 255, 255, 50],
-              getElevation: 1,
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'ZTEFeatures',
-            layer: new SolidPolygonLayer({
-              data: zteFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: d => d['properties']['hex_buildings_count'],
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'hex_education',
-            layer: new SolidPolygonLayer({
-              data: etFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              elevationScale: 1,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'hex_tourism',
-            layer: new SolidPolygonLayer({
-              data: ztFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              elevationScale: 1,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'hex_zdrav',
-            layer: new SolidPolygonLayer({
-              data: ezFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              elevationScale: 1,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'hex_education',
-            layer: new SolidPolygonLayer({
-              data: tourismFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: d => d['properties']['hex_buildings_count'],
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'EZFeatures',
-            layer: new SolidPolygonLayer({
-              data: educationFeatures,
-              extruded: true,
-              filled: true,
-              getLineColor: [255, 255, 255, 255],
-              wireframe: true,
-              fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: d => d['properties']['hex_buildings_count'],
-              getPolygon: d => d['geometry']['coordinates']
-            })
-          },
-          {
-            hexName: 'ZTFeatures',
+            hexName: 'zdravFeatures',
             layer: new SolidPolygonLayer({
               data: zdravFeatures,
               extruded: true,
@@ -354,26 +151,36 @@ export default function MainMap() {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: d => d['properties']['hex_buildings_count'],
+              getElevation: 1,
               getPolygon: d => d['geometry']['coordinates']
             })
-          },
+          }
         ];
 
-        return layers[numberOfLayer]
-      }
+      console.log(defaultFeatures)
 
-      setLayersOfMaps(addHexLayers(objToggles))
+      const initialHexLayer = new SolidPolygonLayer({
+        data: defaultFeatures,
+        extruded: true,
+        filled: true,
+        getLineColor: [255, 255, 255, 255],
+        wireframe: true,
+        getFillColor: [255, 255, 255, 50],
+        getElevation: 1,
+        getPolygon: d => d['geometry']['coordinates']
+      })
+
+      setLayersOfMaps([initialHexLayer, layers[numberOfLayer].layer]);
     }
   }, [typeOfMap, cityInfo, objToggles]);
 
   useEffect(() => {
-    function addLayers(stateOfToggles) {
-      const stateLayers = [];
+    function addLayers(objOfFeatureOfToggles) {
+      const objOfFeatureLayers = [];
 
-      for (let key of Object.keys(stateOfToggles)) {
-        if (stateOfToggles[key]) {
-          stateLayers.push(key);
+      for (let key of Object.keys(objOfFeatureOfToggles)) {
+        if (objOfFeatureOfToggles[key]) {
+          objOfFeatureLayers.push(key);
         }
       }
 
@@ -427,9 +234,12 @@ export default function MainMap() {
       ];
 
       return mapLayers
-        .filter(layerItem => stateLayers.includes(layerItem['layerName']))
+        .filter(layerItem =>
+          objOfFeatureLayers.includes(layerItem['layerName'])
+        )
         .map(item => item['layer']);
     }
+
 
     setLayers(addLayers(objToggles));
   }, [objToggles]);

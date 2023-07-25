@@ -14,7 +14,7 @@ const MapSection = () => {
   const [objToggles, setObjToggles] = useState({});
   const [objectsOfCity, setObjectsOfCity] = useState();
   const [typeOfMap, setTypeOfMap] = useState(1);
-  const [numberOfLayer, setNumberOfLayer] = useState()
+  const [numberOfLayer, setNumberOfLayer] = useState(0)
 
   const changeCity = useCallback(
     info => {

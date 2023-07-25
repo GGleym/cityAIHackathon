@@ -28,8 +28,7 @@ export const FoundCitySheet = () => {
     noData
   } = useContext(SheetsContext);
   const [state, dispatch] = useReducer(toggleReducer, TOGGLE_INITIAL);
-  const [activeButton, setActiveButton] = useState(1);
-
+  const [activeButton, setActiveButton] = useState(1)
 
   const handleToggleChange = e => {
     if (typeOfMap === 4) {
@@ -40,40 +39,6 @@ export const FoundCitySheet = () => {
           value: e.target.checked
         }
       });
-      switch (true) {
-        case state['hex_zdrav'] &&
-          state['hex_education'] &&
-          state['hex_tourism']: {
-          setNumberOfLayer(1);
-          break;
-        }
-        case state['hex_tourism'] && state['hex_education']: {
-          setNumberOfLayer(2);
-          break;
-        }
-        case state['hex_tourism'] && state['hex_zdrav']: {
-          setNumberOfLayer(3);
-          break;
-        }
-        case state['hex_zdrav'] && state['hex_education']: {
-          setNumberOfLayer(4);
-          break;
-        }
-        case state['hex_tourism']: {
-          setNumberOfLayer(5);
-          break;
-        }
-        case state['hex_education']: {
-          setNumberOfLayer(6);
-          break;
-        }
-        case state['hex_zdrav']: {
-          setNumberOfLayer(7);
-          break;
-        }
-        default:
-          setNumberOfLayer(0);
-      }
     } else {
       dispatch({
         type: ACTIONS_TOGGLE.CHANGE_TOGGLE,
@@ -84,8 +49,44 @@ export const FoundCitySheet = () => {
       });
     }
   };
+
+
+  switch (true) {
+    case state['hex_zdrav'] &&
+    state['hex_education'] &&
+    state['hex_tourism']: {
+      setNumberOfLayer(1);
+      break;
+    }
+    case state['hex_tourism'] && state['hex_education']: {
+      setNumberOfLayer(2);
+      break;
+    }
+    case state['hex_tourism'] && state['hex_zdrav']: {
+      setNumberOfLayer(3);
+      break;
+    }
+    case state['hex_zdrav'] && state['hex_education']: {
+      setNumberOfLayer(4);
+      break;
+    }
+    case state['hex_tourism']: {
+      setNumberOfLayer(5);
+      break;
+    }
+    case state['hex_education']: {
+      setNumberOfLayer(6);
+      break;
+    }
+    case state['hex_zdrav']: {
+      setNumberOfLayer(0);
+      break;
+    }
+    default:
+      setNumberOfLayer(0);
+  }
+
   changeLayers(state);
-  console.log(state);
 
   return (
     <div
