@@ -9,13 +9,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { NavbarContext } from '../../components/layouts/Main';
 import roads from '../../public/geoJSONs/roads/город_Архангельск.geojson';
 import { getDifferentHexes } from '../../functions/getDifferentHexes';
-import {
+const {
   GeoJsonLayer,
   PathLayer,
   IconLayer,
   SolidPolygonLayer,
   PolygonLayer
-} from '@deck.gl/layers';
+} = await import("deck.gl");
 
 const ACCESS_TOKEN =
   'pk.eyJ1IjoiZ2dsZXltIiwiYSI6ImNsazQxdTdxbjA2aTEzbXJ5dTQxM2t4eTcifQ.WkaIkLWY8zNsBJOAbhEc0Q';
