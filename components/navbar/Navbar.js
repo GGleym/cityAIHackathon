@@ -119,9 +119,7 @@ export const Navbar = () => {
         </div>
         <ProfileButton />
       </header>
-      <main>
-        <MapLoader loading={loader} />
-      </main>
+      <MapLoader loading={loader} />
     </>
   );
 };

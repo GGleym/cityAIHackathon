@@ -17,9 +17,9 @@ input[type="checkbox"].toggleCheckbox + label::before {
     content: "";
     width: 3rem;
     background-color: #CCC;
-    height: 1.3rem;
+    height: 1.5rem;
     border-radius: 0.75rem;
-    margin: .25em;
+    margin: .15em;
     transition: all 250ms ease-in-out;
 }
 
@@ -37,23 +37,23 @@ input[type="checkbox"].toggleCheckbox + label::after {
 
 input[type="checkbox"].toggleCheckbox:checked + label::after {
     background-color: #FFF;
-    left: 2.1rem;
+    left: 1.9rem;
     /*animation: switch 350ms forwards;*/
 }
 
 
 input[type="checkbox"].toggleCheckbox:checked.zdrav + label::before {
-    background-color: rgba(255, 0, 0, 100);
+    background-color: rgb(252, 88, 79);
     /*transition: all 250ms ease-in-out;*/
 }
 
 input[type="checkbox"].toggleCheckbox:checked.education + label::before {
-    background-color: rgba(0, 255, 0, 100);
+    background-color: rgb(1, 221, 160);
     /*transition: all 250ms ease-in-out;*/
 }
 
 input[type="checkbox"].toggleCheckbox:checked.tourism + label::before {
-    background-color: rgba(0, 0, 255, 100);
+    background-color: rgb(45, 156, 219);
     /*transition: all 250ms ease-in-out;*/
 }
 

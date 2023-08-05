@@ -3,11 +3,12 @@ module.exports = {
     config.module.rules.push({
       test: /\.geojson$/,
       use: ["json-loader"]
-    });
+    })
     return config
   },
-  devIndicators: {
-    autoPrerender: true
-  },
-  reactStrictMode: true,
-};
+  transpilePackages: ["@deck.gl/layers", "@mapbox/tiny-sdf"],
+  experimental: {
+    esmExternals: "loose"
+  }
+}
+

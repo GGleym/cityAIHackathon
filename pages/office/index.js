@@ -21,7 +21,7 @@ import { ButtonSection } from '../../components/officePage/ButtonSection';
 
 const Office = () => {
   const [more, setMore] = useState(null);
-  const [, dispatch] = useReducer(officeReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(officeReducer, INITIAL_STATE);
   const [issuedBy, setIssuedBy] = useState(null);
 
   function handleChange(e) {

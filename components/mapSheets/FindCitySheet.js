@@ -22,7 +22,7 @@ import { parseObjects } from '../../functions/geoJsonFunctions/parseObjects';
 
 export const FindCitySheet = () => {
   const [state, ] = useReducer(cityReducer, CITY_INITIAL_STATE);
-  const { changeCity, changeObjects } = useContext(MapContext);
+  const { changeCity, changeObjects, typeOfMap } = useContext(MapContext);
   const [selectValue, setSelectValue] = useState(null);
   const {
     changeInputValue,
@@ -109,11 +109,12 @@ export const FindCitySheet = () => {
   };
 
   return (
-    <div className={`${styles.cityBoxWrapper}`}>
+    <div className={`${styles.cityBoxWrapper} ${typeOfMap === 2 && styles.darkTheme}`}>
       <form className={styles.formOfFindBox}>
         {!selectValue && <p>Для анализа выберите город</p>}
         <div className={styles.inputSection}>
           <AsyncSelect
+            openMenuOnClick={false}
             instanceId={'findBoxSelect'}
             onChange={handleChange}
             placeholder={'Название города'}

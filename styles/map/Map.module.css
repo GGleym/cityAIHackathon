@@ -12,7 +12,7 @@
     visibility: hidden;
     transform: translateX(-100%);
     opacity: 0;
-    width: 28.5rem;
+    width: calc(17rem + 14vw);
     transition: all .2s ease;
 }
 
@@ -37,6 +37,10 @@
     flex-direction: column;
     gap: 1.5rem;
     margin-bottom: 1rem;
+}
+
+.cityBoxWrapper.darkTheme, .foundCityBox.darkTheme section {
+    backdrop-filter: blur(20px);
 }
 
 .foundCityBox {
@@ -65,13 +69,79 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-.foundCityBox .showOnMapSection span {
+.showOnTransportSheetHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.showOnTransportSheetHeader svg {
+    cursor: pointer;
+}
+
+.showOnTransportSheetHeader path {
+    transition: all 100ms ease-in-out;
+}
+
+.showOnTransportSheetHeader svg:hover path {
+    fill: #333333;
+}
+
+.showOnTransportSheetHeader svg:hover + div {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.showOnTransportSheetHeader div {
+    z-index: 2;
+    width: 11rem;
+    height: 7.3rem;
+    background-color: rgba(0, 0, 0, .8);
+    color: #FFF;
+    border-radius: 1rem;
+    position: absolute;
+    right: 2.7rem;
+    top: 2rem;
+    font-size: .7rem;
+    padding: 0.6rem;
+    text-align: left;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 100ms ease-in-out;
+}
+
+/*.foundCityBox .showOnMapSection .showOnTransportSheet::before {*/
+/*    content: "Hello";*/
+/*    position: absolute;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    right: 0;*/
+/*    top: 0;*/
+/*}*/
+
+/*.foundCityBox .showOnMapSection .showOnTransportSheet::after {*/
+/*    content: "Наведи на мена";*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    top: 0;*/
+/*}*/
+
+/*.foundCityBox .showOnMapSection .showOnTransportSheet::after:hover .showOnTransportSheet::before {*/
+/*    visibility: visible;*/
+/*}*/
+
+.foundCityBox .showOnMapSection span:not(.showOnTransportSheetHeader) {
     display: flex;
     gap: 1rem;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .infoOfCity {
@@ -140,18 +210,29 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    width: 12rem;
+    gap: 0.6rem;
+    width: calc(5.4rem + 8vw);
     height: 4.75rem;
-    padding: 1rem;
+    padding: 1rem 0.7rem;
     border-radius: 1rem;
     border: 1px solid var(--btn-black);
+    overflow: hidden;
+    transition: all 100ms ease-in-out;
+}
+
+.btnTypeOfMap:hover {
+    background-color: rgba(0, 0, 0, .2);
 }
 
 .btnTypeOfMap span {
-    font-size: 1rem;
+    font-size: calc(0.7rem + 0.3vw);
     font-weight: 400;
+    text-align: left;
+    width: min-content;
+}
+
+.btnTypeOfMap svg {
+    min-width: calc(1rem + 1.5vw);
 }
 
 .btnTypeOfMap.pickedBtnType {
@@ -163,53 +244,34 @@
     fill: #FFF;
 }
 
-/*
-Compound Sheets hide on show panel
- */
-
-
-
-/*
-accordion
- */
-
-.accordionGroup {
-    padding-top: 1.2rem;
-}
-
-.accordionGroup div > span {
-    font-size: 1rem;
-    font-weight: 300;
-    font-style: normal;
-    line-height: normal;
-}
-
-.accordionGroup button {
-    margin-bottom: 0.5rem;
-    padding: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    width: 100%;
-    text-align: left;
+.typeOfMapTransportBox {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    max-width: 80%;
+    margin: 0 auto;
 }
 
-.accordionGroup svg {
-    transition: all 300ms ease-in-out;
+.typeOfMapTransportButton {
+    border-radius: 1rem;
+    border: 1px solid var(--btn-black);
+    padding: .5rem;
+    transition: all 100ms ease-in-out;
 }
 
-.accordionGroup button:hover {
-    color: #808080;
-    transition: color 100ms ease-in-out;
+.typeOfMapTransportButton:hover {
+    background-color: rgba(0, 0, 0, .2);
 }
 
-.accordionGroup button:hover path {
-    fill: #808080;
-    transition: color 100ms ease-in-out;
+.typeOfMapTransportButton.activeTransportButton, .typeOfMapTransportButton.activeTransportButton path {
+    background-color: var(--btn-black);
+    fill: #FFF;
 }
+
+/*
+Compound Sheets hide on show panel
+ */
 
 
 .itemBox {
