@@ -1,6 +1,6 @@
 import styles from '/styles/Toggle.module.css';
 
-export const ToggleButton = ({ id, handleToggleChange, name, checked, className }) => {
+export const ToggleButton = ({ id, handleToggleChange, name, checked, className, key }) => {
 
   return (
     <>

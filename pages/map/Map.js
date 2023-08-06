@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import MapGL from 'react-map-gl';
-import DeckGL from "@deck.gl/react"
+import DeckGL from '@deck.gl/react';
 import {
   GeoJsonLayer,
   PathLayer,
@@ -22,8 +22,16 @@ const ICON_MAPPING = {
 };
 
 const MainMap = () => {
-  const { cityInfo, objToggles, typeOfMap, objectsOfCity, numberOfLayer, setClickCoordinates, clickCoordinates, activeTransport } =
-    useContext(MapContext);
+  const {
+    cityInfo,
+    objToggles,
+    typeOfMap,
+    objectsOfCity,
+    numberOfLayer,
+    setClickCoordinates,
+    clickCoordinates,
+    activeTransport
+  } = useContext(MapContext);
   const [layersOfMaps, setLayersOfMaps] = useState();
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/ggleym/clk5rokki009q01pg1o351shx'
@@ -41,21 +49,21 @@ const MainMap = () => {
   const [boundariesOfIsochron, setBoundariesOfIsochron] = useState([]);
 
   useEffect(() => {
-    if (clickCoordinates.length === 0) return
+    if (clickCoordinates.length === 0) return;
     if (typeOfMap === 2) {
-      let transport
+      let transport;
       switch (activeTransport) {
-        case (1): {
-          transport = "foot"
-          break
+        case 1: {
+          transport = 'foot';
+          break;
         }
-        case (2): {
-          transport = "bike"
-          break
+        case 2: {
+          transport = 'bike';
+          break;
         }
-        case (3): {
-          transport = "car"
-          break
+        case 3: {
+          transport = 'car';
+          break;
         }
       }
       (async function () {
@@ -203,14 +211,10 @@ const MainMap = () => {
       }
 
       (async function () {
-        // const slowRoadsData = await fetch(
-        //   `/geoJSONs/slow_roads/${cityInfo['selectValueName']}.geojson`
-        // );
         const roadsData = await fetch(
           `/geoJSONs/roads/${cityInfo['selectValueName']}.geojson`
         );
 
-        // const responseSlowRoadsData = await slowRoadsData.json();
         const responseRoadsData = await roadsData.json();
 
         const getColorOfRoad = obj => {
@@ -302,6 +306,10 @@ const MainMap = () => {
           );
         })();
       }
+    } else if (typeOfMap === 4) {
+      for (let key of Object.keys(objToggles)) {
+        objToggles[key] = false;
+      }
     }
   }, [typeOfMap, cityInfo]);
 
@@ -311,10 +319,6 @@ const MainMap = () => {
       setTheme('black');
       setLayers([]);
       setIsochron([]);
-
-      // for (let key of Object.keys(objToggles)) { //это нужно убрать, если
-      //   objToggles[key] = false;                //хотим, чтобы цветы сливались
-      // }
 
       (async function () {
         const {
@@ -542,11 +546,10 @@ const MainMap = () => {
             boundariesOfIsochron
           );
         }
-        console.log(objToggles);
 
         const mapLayers = [
           {
-            layerName: 'objects_education',
+            layerName: 'transport_education_objects',
             layer: new GeoJsonLayer({
               id: 'educationObjects',
               data: filteredEducation,
@@ -565,7 +568,7 @@ const MainMap = () => {
             })
           },
           {
-            layerName: 'objects_tourism',
+            layerName: 'transport_tourism_objects',
             layer: new GeoJsonLayer({
               id: 'tourismObjects',
               data: filteredTourism,
@@ -584,7 +587,7 @@ const MainMap = () => {
             })
           },
           {
-            layerName: 'objects_zdrav',
+            layerName: 'transport_zdrav_objects',
             layer: new GeoJsonLayer({
               id: 'zdravObjects',
               data: filteredZdrav,

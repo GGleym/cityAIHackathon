@@ -105,7 +105,7 @@ export const FindCitySheet = () => {
       ...baseStyles,
       transition: 'all .2s ease-in-out',
       transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'none'
-    })
+    }),
   };
 
   return (
@@ -129,7 +129,7 @@ export const FindCitySheet = () => {
                 primary: '#D9c7B1'
               }
             })}
-            noOptionsMessage={() => 'Такого города у нас нет :('}
+            noOptionsMessage={() => 'Такого города у нас нет'}
             closeMenuOnScroll={true}
             loadingMessage={() => 'Поиск города...'}
           />

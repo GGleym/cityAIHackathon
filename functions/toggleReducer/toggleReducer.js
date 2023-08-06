@@ -4,7 +4,10 @@ export const TOGGLE_INITIAL = {
     objects_zdrav: false,
     hex_education: false,
     hex_tourism: false,
-    hex_zdrav: false
+    hex_zdrav: false,
+    transport_education_objects: false,
+    transport_tourism_objects: false,
+    transport_zdrav_objects: false
 }
 
 

@@ -1,12 +1,15 @@
 import styles from '../../styles/panel/Panel.module.css';
 // import Select from 'react-select';
 import { PanelSheet } from './PanelSheet';
-import { useContext } from 'react';
+import {useContext, useState} from 'react';
 import { NavbarContext } from '../layouts/Main';
 import cities from '../../public/geoJSONs/areas.geojson';
+import {CiCircleAlert} from "react-icons/ci";
 
 export const MainPanel = () => {
   const { showPanel } = useContext(NavbarContext);
+  const [inputValue, setInputValue] = useState("")
+
   let setOfCities = new Set();
 
   for (let key of Object.keys(cities)) {
@@ -65,29 +68,12 @@ export const MainPanel = () => {
     <div className={`${styles.mainPanel} ${showPanel && styles.activePanel}`}>
       <div className={styles.upperPanel}>
         <h1>Обзорная панель</h1>
-        {/*<Select*/}
-        {/*  instanceId={'panelSelect'}*/}
-        {/*  placeholder={'Выберите город'}*/}
-        {/*  options={options}*/}
-        {/*  // onChange={handleChange}*/}
-        {/*  styles={panelSelectStyles}*/}
-        {/*  theme={theme => ({*/}
-        {/*    ...theme,*/}
-        {/*    borderRadius: '1rem',*/}
-        {/*    colors: {*/}
-        {/*      ...theme.colors,*/}
-        {/*      primary25: '#D9c7B1',*/}
-        {/*      primary: '#D9c7B1'*/}
-        {/*    }*/}
-        {/*  })}*/}
-        {/*  noOptionsMessage={() => 'Такого города у нас нет :('}*/}
-        {/*  closeMenuOnScroll={true}*/}
-        {/*/>*/}
+        <input type="text" placeholder={"Введите город"} value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
       </div>
       <div className={styles.gridPanel}>
-        {[...setOfCities].map(
+        {[...setOfCities].filter((item) => item.toLowerCase().includes(inputValue.toLowerCase())).map(
           (item, index) =>
-            index < 20 && (
+            index < 100 && (
               <PanelSheet
                 key={index}
                 cityName={item}
@@ -97,6 +83,14 @@ export const MainPanel = () => {
             )
         )}
       </div>
+      {
+          [...setOfCities].filter((item) => item.toLowerCase().includes(inputValue.toLowerCase())).length === 0 && (
+              <div className={styles.wrongCityAlert}>
+                <CiCircleAlert size={30}/>
+                <h2>Город не найден</h2>
+              </div>
+          )
+      }
     </div>
   );
 };

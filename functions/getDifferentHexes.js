@@ -68,15 +68,15 @@ export const getDifferentHexes = async cityName => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_education']) {
-        feature.color = [1, 221, 160, 150];
+        feature.color = [1, 221, 160, 180];
       }
     }
   };
   const changeTourism = feature => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
-      if (objOfFeature['hex_tourism']) {
-        feature.color = [45, 156, 219, 150];
+      if (objOfFeature["hex_tourism"]) {
+        feature.color = [45, 156, 219, 180];
       }
     }
   };
@@ -84,7 +84,7 @@ export const getDifferentHexes = async cityName => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_zdrav']) {
-        feature.color = [252, 88, 79, 150];
+        feature.color = [252, 88, 79, 160];
       }
     }
   };
@@ -93,10 +93,16 @@ export const getDifferentHexes = async cityName => {
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_education'] && objOfFeature['hex_tourism']) {
         feature.color = createRGBAGradient(
-          [1, 221, 160, 170],
-          [45, 156, 255, 200],
-          4
+          [1, 251, 160, 180],
+          [45, 120, 255, 200],
+           7
         );
+      }
+      else if (objOfFeature["hex_education"]) {
+        feature.color = [1, 221, 160, 150]
+      }
+      else if (objOfFeature["hex_tourism"]) {
+        feature.color = [45, 156, 219, 150]
       }
     }
   };
@@ -105,10 +111,16 @@ export const getDifferentHexes = async cityName => {
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_education'] && objOfFeature['hex_zdrav']) {
         feature.color = createRGBAGradient(
-          [1, 221, 160, 170],
-          [255, 88, 79, 150],
-          5
+          [1, 221, 160, 190],
+          [255, 88, 79, 200],
+           5
         );
+      }
+      else if (objOfFeature["hex_education"]) {
+        feature.color = [1, 221, 160, 150]
+      }
+      else if (objOfFeature["hex_zdrav"]) {
+        feature.color = [252, 88, 79, 150]
       }
     }
   };
@@ -117,10 +129,16 @@ export const getDifferentHexes = async cityName => {
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_zdrav'] && objOfFeature['hex_tourism']) {
         feature.color = createRGBAGradient(
-          [252, 88, 79, 170],
+          [252, 88, 79, 180],
           [45, 156, 219, 200],
-          5
+        5
         );
+      }
+      else if (objOfFeature["hex_tourism"]) {
+        feature.color = [45, 156, 219, 150]
+      }
+      else if (objOfFeature["hex_zdrav"]) {
+        feature.color = [252, 88, 79, 150]
       }
     }
   };
@@ -138,6 +156,15 @@ export const getDifferentHexes = async cityName => {
           [45, 156, 219, 170],
             5
         );
+      }
+      else if (objOfFeature["hex_tourism"]) {
+        feature.color = [45, 156, 219, 150]
+      }
+      else if (objOfFeature["hex_zdrav"]) {
+        feature.color = [252, 88, 79, 150]
+      }
+      else if (objOfFeature["hex_education"]) {
+        feature.color = [1, 221, 160, 150]
       }
     }
   };
