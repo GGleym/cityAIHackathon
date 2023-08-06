@@ -343,7 +343,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -357,7 +357,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -371,7 +371,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -385,7 +385,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -399,7 +399,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -413,7 +413,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -427,7 +427,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           },
@@ -441,7 +441,7 @@ const MainMap = () => {
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
               getFillColor: d => d.color || [100, 100, 100, 100],
-              getElevation: 1,
+              getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
           }
