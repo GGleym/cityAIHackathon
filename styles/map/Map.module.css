@@ -75,46 +75,78 @@
 .showOnTransportSheetHeader {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
-    position: relative;
+    justify-content: space-between;
 }
 
-.showOnTransportSheetHeader svg {
+.showOnTransportSheetHeader span {
+    align-items: center !important;
+}
+
+.showOnTransportSheetHeader button {
+    padding: 0 0 0 1rem;
+}
+
+.showOnTransportSheetHeader.coordinatesActive button:hover + .clearButtonAlert {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.clearButtonAlert {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 0, .8);
+    color: #FFF;
+    border-radius: 1rem;
+    text-align: center !important;
+    right: 0.2rem !important;
+    top: 3.4rem !important;
+    width: 4.4rem !important;
+}
+
+.showOnTransportSheetHeader span svg {
     cursor: pointer;
 }
 
-.showOnTransportSheetHeader path {
+.showOnTransportSheetHeader span path {
     transition: all 100ms ease-in-out;
 }
 
-.showOnTransportSheetHeader svg:hover path {
+.showOnTransportSheetHeader span svg:hover path {
     fill: #333333;
 }
 
-.showOnTransportSheetHeader svg:hover + div {
+.showOnTransportSheetHeader span svg:hover + div {
     visibility: visible;
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
 .showOnTransportSheetHeader div {
     z-index: 2;
     width: 11rem;
-    height: 7.3rem;
     background-color: rgba(0, 0, 0, .8);
     color: #FFF;
     border-radius: 1rem;
     position: absolute;
-    right: 2.7rem;
-    top: 2rem;
+    right: 3.9rem;
+    top: 3.3rem;
     font-size: .7rem;
     padding: 0.6rem;
     text-align: left;
     visibility: hidden;
     opacity: 0;
-    transform: translateX(10px);
+    transform: translateY(10px);
     transition: all 100ms ease-in-out;
+}
+
+.hexDivider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, .3);
 }
 
 /*.foundCityBox .showOnMapSection .showOnTransportSheet::before {*/

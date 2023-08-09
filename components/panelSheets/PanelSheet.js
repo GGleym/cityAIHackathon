@@ -4,11 +4,7 @@ export const PanelSheet = ({cityName, numberOfPeople, area}) => {
   return (
       <div className={styles.gridItemPanel}>
         <div>
-          <h3>Название города</h3>
-          <p>{cityName}</p>
-        </div>
-        <div className={styles.descriptionOfCity}>
-          <span>Описание</span>
+          <h3>{cityName}</h3>
         </div>
         <div className={styles.infoOfCity}>
           <p>

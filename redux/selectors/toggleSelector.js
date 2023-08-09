@@ -1,0 +1,1 @@
+const selectToggleModule = (state) => state.toggle

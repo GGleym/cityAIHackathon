@@ -72,10 +72,6 @@ button {
     cursor: pointer;
 }
 
-button:disabled {
-    background: black;
-}
-
 a {
     text-decoration: none;
     color: #FFF;

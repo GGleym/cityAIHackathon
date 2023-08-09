@@ -2,24 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import MapGL from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import {
-  GeoJsonLayer,
   PathLayer,
   SolidPolygonLayer,
   PolygonLayer,
-  IconLayer
+  IconLayer,
+  ColumnLayer
 } from '@deck.gl/layers';
 import { MapContext } from '../index';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { NavbarContext } from '../../components/layouts/Main';
 import { getDifferentHexes } from '../../functions/getDifferentHexes';
 import { filterObjects } from '../../functions/objectsFilter/filterObjects';
-
-const ACCESS_TOKEN =
-  'pk.eyJ1IjoiZ2dsZXltIiwiYSI6ImNsazQxdTdxbjA2aTEzbXJ5dTQxM2t4eTcifQ.WkaIkLWY8zNsBJOAbhEc0Q';
-
-const ICON_MAPPING = {
-  marker: { x: 0, y: 0, width: 128, height: 128, mask: true, anchorY: 120 }
-};
+import { useGetRoadsQuery } from '../../redux/services/cityApi';
+import { getColorOfRoadHexes } from '../../functions/mapFunctions/getColorOfRoad';
+import { ACCESS_TOKEN } from '../../public/mapTokens/mapToken';
+import { ICON_MAPPING } from '../../public/ICON_MAPPING';
 
 const MainMap = () => {
   const {
@@ -30,15 +27,16 @@ const MainMap = () => {
     numberOfLayer,
     setClickCoordinates,
     clickCoordinates,
-    activeTransport
+    activeTransport,
+    layers,
+    setLayers
   } = useContext(MapContext);
+  const { setTheme, setLoader } = useContext(NavbarContext);
   const [layersOfMaps, setLayersOfMaps] = useState();
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/ggleym/clk5rokki009q01pg1o351shx'
   );
   const [isochron, setIsochron] = useState([]);
-  const [layers, setLayers] = useState([]);
-  const { setTheme, setLoader } = useContext(NavbarContext);
   const [initialViewState, setInitialViewState] = useState({
     latitude: cityInfo && cityInfo['cityCoordinates'][0],
     longitude: cityInfo && cityInfo['cityCoordinates'][1],
@@ -47,117 +45,112 @@ const MainMap = () => {
     pitch: 40
   });
   const [boundariesOfIsochron, setBoundariesOfIsochron] = useState([]);
+  const { data: roadsData } = useGetRoadsQuery(cityInfo['selectValueName']);
+  const [roadsHexes, setRoadsHexes] = useState([]);
 
   useEffect(() => {
-    if (clickCoordinates.length === 0) return;
+    if (clickCoordinates.length === 0) {
+      setIsochron([]);
+      return;
+    }
     if (typeOfMap === 2) {
-      let transport;
-      switch (activeTransport) {
-        case 1: {
-          transport = 'foot';
-          break;
-        }
-        case 2: {
-          transport = 'bike';
-          break;
-        }
-        case 3: {
-          transport = 'car';
-          break;
-        }
-      }
       (async function () {
-        const isochroneResult = await fetch(
-          `https://graphhopper.com/api/1/isochrone?point=${clickCoordinates[1]},${clickCoordinates[0]}&profile=${transport}&time_limit=900&buckets=3&key=550ee6f2-15b2-4b89-b21e-66304e205b7a`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-type': 'application/json'
-            }
-          }
-        );
-        const response = await isochroneResult.json();
-
-        const firstPolygon = [
-          {
-            polygon:
-              response && response['polygons'][0]['geometry']['coordinates']
-          }
-        ];
-
-        const secondPolygon = [
-          {
-            polygon:
-              response && response['polygons'][1]['geometry']['coordinates']
-          }
-        ];
-
-        const thirdPolygon = [
-          {
-            polygon:
-              response && response['polygons'][2]['geometry']['coordinates']
-          }
-        ];
-
-        setBoundariesOfIsochron(thirdPolygon[0]['polygon']);
-
-        setIsochron([
-          new PolygonLayer({
-            id: '15minPolygon',
-            data: thirdPolygon,
-            pickable: false,
-            stroked: true,
-            filled: true,
-            lineWidthMinPixels: 2,
-            getPolygon: d => d.polygon,
-            getLineColor: [150, 0, 0],
-            getFillColor: [252, 88, 79, 100],
-            getLineWidth: 2,
-            lineJointRounded: true
-          }),
-          new PolygonLayer({
-            id: '10minPolygon',
-            data: secondPolygon,
-            pickable: false,
-            stroked: true,
-            filled: true,
-            lineWidthMinPixels: 2,
-            getPolygon: d => d.polygon,
-            getLineColor: [0, 0, 150],
-            getFillColor: [45, 156, 219, 100],
-            getLineWidth: 2,
-            lineJointRounded: true
-          }),
-          new PolygonLayer({
-            id: '5minPolygon',
-            data: firstPolygon,
-            pickable: false,
-            stroked: true,
-            filled: true,
-            lineWidthMinPixels: 2,
-            getPolygon: d => d.polygon,
-            getLineColor: [0, 150, 0],
-            getFillColor: [1, 221, 160, 100],
-            getLineWidth: 2,
-            lineJointRounded: true
-          }),
-          new IconLayer({
-            id: 'isochronMarker',
-            data: [
-              {
-                coordinates: clickCoordinates
+        try {
+          const isochroneResult = await fetch(
+            `https://graphhopper.com/api/1/isochrone?point=${clickCoordinates[1]},${clickCoordinates[0]}&profile=${activeTransport}&time_limit=900&buckets=3&key=550ee6f2-15b2-4b89-b21e-66304e205b7a`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-type': 'application/json'
               }
-            ],
-            pickable: false,
-            iconMapping: ICON_MAPPING,
-            iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
-            getIcon: d => 'marker',
-            getPosition: d => d.coordinates,
-            sizeScale: 2,
-            getSize: 20,
-            getColor: [255, 0, 0, 255]
-          })
-        ]);
+            }
+          );
+
+          const response = await isochroneResult.json();
+
+          const firstPolygon = [
+            {
+              polygon:
+                  response && response['polygons'][0]['geometry']['coordinates']
+            }
+          ];
+
+          const secondPolygon = [
+            {
+              polygon:
+                  response && response['polygons'][1]['geometry']['coordinates']
+            }
+          ];
+
+          const thirdPolygon = [
+            {
+              polygon:
+                  response && response['polygons'][2]['geometry']['coordinates']
+            }
+          ];
+
+          setBoundariesOfIsochron(thirdPolygon[0]['polygon']);
+
+          setIsochron([
+            new PolygonLayer({
+              id: '15minPolygon',
+              data: thirdPolygon,
+              pickable: false,
+              stroked: true,
+              filled: true,
+              lineWidthMinPixels: 2,
+              getPolygon: d => d.polygon,
+              getLineColor: [150, 0, 0],
+              getFillColor: [252, 88, 79, 100],
+              getLineWidth: 2,
+              lineJointRounded: true
+            }),
+            new PolygonLayer({
+              id: '10minPolygon',
+              data: secondPolygon,
+              pickable: false,
+              stroked: true,
+              filled: true,
+              lineWidthMinPixels: 2,
+              getPolygon: d => d.polygon,
+              getLineColor: [0, 0, 150],
+              getFillColor: [45, 156, 219, 100],
+              getLineWidth: 2,
+              lineJointRounded: true
+            }),
+            new PolygonLayer({
+              id: '5minPolygon',
+              data: firstPolygon,
+              pickable: false,
+              stroked: true,
+              filled: true,
+              lineWidthMinPixels: 2,
+              getPolygon: d => d.polygon,
+              getLineColor: [0, 150, 0],
+              getFillColor: [1, 221, 160, 100],
+              getLineWidth: 2,
+              lineJointRounded: true
+            }),
+            new IconLayer({
+              id: 'isochronMarker',
+              data: [
+                {
+                  coordinates: clickCoordinates
+                }
+              ],
+              pickable: false,
+              iconMapping: ICON_MAPPING,
+              iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
+              getIcon: d => 'marker',
+              getPosition: d => d.coordinates,
+              sizeScale: 2,
+              getSize: 20,
+              getColor: [255, 0, 0, 255]
+            })
+          ]);
+        } catch (e) {
+          console.error(e);
+        }
       })();
     }
   }, [clickCoordinates, typeOfMap, activeTransport]);
@@ -178,8 +171,8 @@ const MainMap = () => {
 
   useEffect(() => {
     if (typeOfMap === 1) {
-      setMapStyle('mapbox://styles/ggleym/clk5rokki009q01pg1o351shx');
-      setTheme('white');
+      setMapStyle('mapbox://styles/ggleym/clkfcpdcm004301qydbqx1fe2');
+      setTheme('black');
       setLayers([]);
       setIsochron([]);
 
@@ -192,9 +185,11 @@ const MainMap = () => {
           id: 'borderLayer',
           data: dataOfInitialLayer,
           pickable: false,
-          stroked: true,
-          filled: false,
+          stroked: false,
+          filled: true,
           lineWidthMinPixels: 2,
+          wireframe: true,
+          getFillColor: [255, 255, 255, 80],
           getPolygon: d => d.polygon,
           getLineColor: [80, 80, 80],
           getLineWidth: 2
@@ -210,56 +205,48 @@ const MainMap = () => {
         objToggles[key] = false;
       }
 
-      (async function () {
-        const roadsData = await fetch(
-          `/geoJSONs/roads/${cityInfo['selectValueName']}.geojson`
-        );
+      const getColorOfRoad = obj => {
+        if (
+          obj['properties']['minutes'] &&
+          obj['properties']['minutes'] > 0.05 &&
+          obj['properties']['minutes'] < 0.07
+        ) {
+          return [255, 255, 0, 100];
+        } else if (
+          obj['properties']['minutes'] &&
+          obj['properties']['minutes'] < 0.05
+        ) {
+          return [1, 221, 160, 100];
+        } else if (
+          obj['properties']['minutes'] &&
+          obj['properties']['minutes'] > 0.07
+        ) {
+          return [252, 88, 79, 100];
+        } else if (obj['properties']['meters'] > 80) {
+          return [252, 88, 79, 100];
+        } else if (obj['properties']['meters'] < 80) {
+          return [1, 221, 160, 100];
+        } else {
+          return [255, 255, 0, 100];
+        }
+      };
 
-        const responseRoadsData = await roadsData.json();
-
-        const getColorOfRoad = obj => {
-          if (
-            obj['properties']['minutes'] &&
-            obj['properties']['minutes'] > 0.05 &&
-            obj['properties']['minutes'] < 0.07
-          ) {
-            return [255, 255, 0, 100];
-          } else if (
-            obj['properties']['minutes'] &&
-            obj['properties']['minutes'] < 0.05
-          ) {
-            return [1, 221, 160];
-          } else if (
-            obj['properties']['minutes'] &&
-            obj['properties']['minutes'] > 0.07
-          ) {
-            return [252, 88, 79];
-          } else if (obj['properties']['meters'] > 80) {
-            return [252, 88, 79];
-          } else if (obj['properties']['meters'] < 80) {
-            return [1, 221, 160];
-          } else {
-            return [255, 255, 0, 100];
-          }
-        };
-
-        setLayersOfMaps([
-          new PathLayer({
-            data: responseRoadsData.features,
-            pickable: false,
-            widthScale: 1,
-            widthMinPixels: 1,
-            getPath: d => d['geometry']['coordinates'][0],
-            getColor: getColorOfRoad,
-            draggable: false,
-            getWidth: 1,
-            capRounded: true,
-            jointRounded: true
-          })
-        ]);
-      })();
+      setLayersOfMaps([
+        new PathLayer({
+          data: roadsData.features,
+          pickable: false,
+          widthScale: 1,
+          widthMinPixels: 1,
+          getPath: d => d['geometry']['coordinates'][0],
+          getColor: getColorOfRoad,
+          draggable: false,
+          getWidth: 1,
+          capRounded: true,
+          jointRounded: true
+        })
+      ]);
     } else if (typeOfMap === 3) {
-      setMapStyle('mapbox://styles/ggleym/clkfcpdcm004301qydbqx1fe2');
+      setMapStyle('mapbox://styles/ggleym/clk5rokki009q01pg1o351shx');
       setTheme('black');
       setLayers([]);
       setIsochron([]);
@@ -282,26 +269,32 @@ const MainMap = () => {
 
           const getFillColor = d => {
             if (d && d.properties.year < 1965 && d.properties.year !== 0) {
-              return [252, 88, 79];
+              return [252, 88, 79, 150];
             } else {
-              return [1, 221, 160];
+              return [1, 221, 160, 150];
             }
           };
 
+          const getElevation = d => {
+            if (d.properties.year === 0) return (1965 - 1900) / 5;
+            else return (d.properties.year - 1950) / 5;
+          };
+
           setLayersOfMaps(
-            new GeoJsonLayer({
-              id: 'buildings',
-              data: buildingsData,
-              pickable: true,
-              stroked: false,
-              filled: true,
+            new ColumnLayer({
+              id: 'column-layer',
+              data: buildingsData.features,
+              diskResolution: 10,
+              radius: 12,
               extruded: true,
-              pointType: 'circle',
-              lineWidthScale: 10,
-              lineWidthMinPixels: 2,
+              // wireframe: true,
+              // flatShading: true,
+              pickable: true,
+              elevationScale: 4,
+              getPosition: d => d.geometry.coordinates,
               getFillColor: getFillColor,
-              getPointRadius: 10,
-              getLineWidth: 1
+              getLineColor: [0, 0, 0],
+              getElevation: getElevation
             })
           );
         })();
@@ -315,10 +308,30 @@ const MainMap = () => {
 
   useEffect(() => {
     if (typeOfMap === 4) {
-      setMapStyle('mapbox://styles/ggleym/clkgs5q2b007e01pcd4iq4bhd');
+      setMapStyle('mapbox://styles/ggleym/cll2flv0500di01p8224ifgl1');
+      //'mapbox://styles/ggleym/clkgs5q2b007e01pcd4iq4bhd'
       setTheme('black');
       setLayers([]);
       setIsochron([]);
+
+      if (objToggles['transport_hexes']) {
+        setRoadsHexes([
+          new PathLayer({
+            data: roadsData.features,
+            pickable: false,
+            widthScale: 1,
+            widthMinPixels: 1,
+            getPath: d => d['geometry']['coordinates'][0],
+            getColor: getColorOfRoadHexes,
+            draggable: false,
+            getWidth: 1,
+            capRounded: true,
+            jointRounded: true
+          })
+        ]);
+      } else {
+        setRoadsHexes([]);
+      }
 
       (async function () {
         const {
@@ -341,8 +354,7 @@ const MainMap = () => {
               getLineColor: [255, 255, 255, 255],
               wireframe: true,
               fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -355,8 +367,7 @@ const MainMap = () => {
               getLineColor: [255, 255, 255, 255],
               wireframe: true,
               fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -369,8 +380,7 @@ const MainMap = () => {
               getLineColor: [255, 255, 255, 255],
               wireframe: true,
               fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -383,8 +393,7 @@ const MainMap = () => {
               getLineColor: [255, 255, 255, 255],
               wireframe: true,
               fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -397,8 +406,7 @@ const MainMap = () => {
               getLineColor: [255, 255, 255, 255],
               wireframe: true,
               fillColor: [100, 100, 100, 100],
-              elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -412,7 +420,7 @@ const MainMap = () => {
               wireframe: true,
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -426,7 +434,7 @@ const MainMap = () => {
               wireframe: true,
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -440,7 +448,7 @@ const MainMap = () => {
               wireframe: true,
               fillColor: [100, 100, 100, 100],
               elevationScale: 10,
-              getFillColor: d => d.color || [100, 100, 100, 100],
+              getFillColor: d => d.color || [100, 100, 100, 50],
               getElevation: 0,
               getPolygon: d => d['geometry']['coordinates']
             })
@@ -470,7 +478,7 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsEducation.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
               sizeScale: 10,
@@ -485,7 +493,7 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsTourism.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
               sizeScale: 10,
@@ -500,7 +508,7 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsZdrav.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=85049&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
               sizeScale: 10,
@@ -519,6 +527,13 @@ const MainMap = () => {
 
       setLayers(addLayers(objToggles));
     } else if (typeOfMap === 2) {
+      if (clickCoordinates.length === 0 || boundariesOfIsochron.length === 0) {
+        for (let key of Object.keys(objToggles)) {
+          objToggles[key] = false;
+        }
+        return;
+      }
+
       function addObjectToTransport(objOfFeatureOfToggles) {
         const objOfFeatureLayers = [];
 
@@ -550,59 +565,56 @@ const MainMap = () => {
         const mapLayers = [
           {
             layerName: 'transport_education_objects',
-            layer: new GeoJsonLayer({
-              id: 'educationObjects',
+            layer: new ColumnLayer({
+              id: 'column-layer',
               data: filteredEducation,
-              pickable: true,
-              getPosition: d => d.geometry.coordinates,
-              stroked: false,
-              filled: true,
+              diskResolution: 10,
+              radius: 12,
               extruded: true,
-              pointType: 'circle',
-              lineWidthScale: 10,
-              lineWidthMinPixels: 2,
-              getFillColor: [0, 255, 0],
-              getPointRadius: 10,
-              sizeScale: 10,
-              getSize: 4
+              // wireframe: true,
+              // flatShading: true,
+              pickable: true,
+              elevationScale: 4,
+              getPosition: d => d.geometry.coordinates,
+              getFillColor: [20, 255, 20, 255],
+              getLineColor: [0, 0, 0],
+              getElevation: 2
             })
           },
           {
             layerName: 'transport_tourism_objects',
-            layer: new GeoJsonLayer({
-              id: 'tourismObjects',
+            layer: new ColumnLayer({
+              id: 'column-layer',
               data: filteredTourism,
-              pickable: true,
-              getPosition: d => d.geometry.coordinates,
-              stroked: false,
-              filled: true,
+              diskResolution: 10,
+              radius: 12,
               extruded: true,
-              pointType: 'circle',
-              lineWidthScale: 10,
-              lineWidthMinPixels: 2,
-              getFillColor: [1, 5, 255],
-              getPointRadius: 10,
-              sizeScale: 10,
-              getSize: 4
+              // wireframe: true,
+              // flatShading: true,
+              pickable: true,
+              elevationScale: 4,
+              getPosition: d => d.geometry.coordinates,
+              getFillColor: [1, 5, 255, 255],
+              getLineColor: [0, 0, 0],
+              getElevation: 2
             })
           },
           {
             layerName: 'transport_zdrav_objects',
-            layer: new GeoJsonLayer({
-              id: 'zdravObjects',
+            layer: new ColumnLayer({
+              id: 'column-layer',
               data: filteredZdrav,
-              pickable: true,
-              getPosition: d => d.geometry.coordinates,
-              stroked: false,
-              filled: true,
+              diskResolution: 10,
+              radius: 12,
               extruded: true,
-              pointType: 'circle',
-              lineWidthScale: 10,
-              lineWidthMinPixels: 2,
-              getFillColor: [255, 150, 0],
-              getPointRadius: 10,
-              sizeScale: 10,
-              getSize: 4
+              // wireframe: true,
+              // flatShading: true,
+              pickable: true,
+              elevationScale: 4,
+              getPosition: d => d.geometry.coordinates,
+              getFillColor: [255, 150, 0, 255],
+              getLineColor: [0, 0, 0],
+              getElevation: 2
             })
           }
         ];
@@ -616,7 +628,7 @@ const MainMap = () => {
 
       setLayers(addObjectToTransport(objToggles));
     }
-  }, [objToggles]);
+  }, [objToggles, boundariesOfIsochron]);
 
   const getTooltip = ({ object }) => {
     if (object && object.properties.name) {
@@ -648,10 +660,10 @@ const MainMap = () => {
       <DeckGL
         initialViewState={initialViewState}
         controller={true}
-        layers={[layersOfMaps, ...layers, ...isochron]}
+        layers={[layersOfMaps, ...layers, ...isochron, ...roadsHexes]}
         getTooltip={getTooltip}
         style={{ position: 'fixed' }}
-        onClick={e => setClickCoordinates(e.coordinate)}
+        onClick={e => typeOfMap === 2 && setClickCoordinates(e.coordinate)}
       >
         <MapGL
           mapboxAccessToken={ACCESS_TOKEN}

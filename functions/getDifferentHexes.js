@@ -68,7 +68,7 @@ export const getDifferentHexes = async cityName => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_education']) {
-        feature.color = [1, 221, 160, 180];
+        feature.color = [1, 221, 160, 100];
       }
     }
   };
@@ -76,7 +76,7 @@ export const getDifferentHexes = async cityName => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature["hex_tourism"]) {
-        feature.color = [45, 156, 219, 180];
+        feature.color = [45, 156, 219, 100];
       }
     }
   };
@@ -84,7 +84,7 @@ export const getDifferentHexes = async cityName => {
     let objOfFeature = feature.properties;
     for (let key of Object.keys(objOfFeature)) {
       if (objOfFeature['hex_zdrav']) {
-        feature.color = [252, 88, 79, 160];
+        feature.color = [252, 88, 79, 100];
       }
     }
   };
@@ -113,7 +113,7 @@ export const getDifferentHexes = async cityName => {
         feature.color = createRGBAGradient(
           [1, 221, 160, 190],
           [255, 88, 79, 200],
-           5
+          6
         );
       }
       else if (objOfFeature["hex_education"]) {
@@ -151,10 +151,10 @@ export const getDifferentHexes = async cityName => {
         objOfFeature['hex_tourism']
       ) {
         feature.color = createThreeColorGradient(
-          [255, 30, 79, 170],
-          [1, 221, 160, 170],
-          [45, 156, 219, 170],
-            5
+          [255, 30, 79, 210],
+          [1, 200, 160, 170],
+          [45, 50, 255, 200],
+         7
         );
       }
       else if (objOfFeature["hex_tourism"]) {

@@ -114,6 +114,7 @@ export const FindCitySheet = () => {
         {!selectValue && <p>Для анализа выберите город</p>}
         <div className={styles.inputSection}>
           <AsyncSelect
+              defaultOptions={[{value: "город_Архангельск", label: "Архангельск"}]}
             openMenuOnClick={false}
             instanceId={'findBoxSelect'}
             onChange={handleChange}

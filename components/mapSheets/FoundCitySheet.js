@@ -16,6 +16,8 @@ import {
   PiCarProfile,
   PiQuestionThin
 } from 'react-icons/pi';
+import { FaRoad } from 'react-icons/fa';
+import { AiOutlineClear } from 'react-icons/ai';
 
 export const FoundCitySheet = () => {
   const {
@@ -26,8 +28,10 @@ export const FoundCitySheet = () => {
     typeOfMap,
     setNumberOfLayer,
     clickCoordinates,
+    setClickCoordinates,
     setActiveTransport,
-    activeTransport
+    activeTransport,
+    setLayers
   } = useContext(MapContext);
   const {
     showFoundBox,
@@ -258,43 +262,54 @@ export const FoundCitySheet = () => {
         <section className={styles.showOnMapSection}>
           {typeOfMap === 2 ? (
             <>
-              <span className={styles.showOnTransportSheetHeader}>
-                <h3>Транспортная доступность</h3>
-                <PiQuestionThin size={22} />
-                <div>
-                  <p>
-                    При нажатии на любую точку на карте программа рассчитывает:{' '}
-                    <br />
-                    1. 5-минутную доступность
-                    <br />
-                    2. 10-минутную доступность
-                    <br />
-                    3. 15-минутную доступность
-                    <br />
-                  </p>
+              <span className={`${styles.showOnTransportSheetHeader} ${clickCoordinates.length !== 0 && styles.coordinatesActive}`}>
+                <span>
+                  <h3>Транспортная доступность</h3>
+                  <PiQuestionThin size={22} />
+                  <div>
+                    <p>
+                      При выборе координаты программа
+                      рассчитывает:<br />
+                      1. 5-минутную доступность
+                      <br />
+                      2. 10-минутную доступность
+                      <br />
+                      3. 15-минутную доступность
+                      <br />
+                    </p>
+                  </div>
+                </span>
+                <button onClick={() => {
+                  setLayers([])
+                  setClickCoordinates([])
+                }} disabled={clickCoordinates.length === 0}>
+                  <AiOutlineClear size={25} />
+                </button>
+                <div className={styles.clearButtonAlert}>
+                  <p>Убрать изохроны</p>
                 </div>
               </span>
               <div className={styles.typeOfMapTransportBox}>
                 <button
-                  onClick={() => setActiveTransport(1)}
+                  onClick={() => setActiveTransport("foot")}
                   className={`${styles.typeOfMapTransportButton} ${
-                    activeTransport === 1 && styles.activeTransportButton
+                    activeTransport === "foot" && styles.activeTransportButton
                   }`}
                 >
                   <PiPersonSimpleWalk size={30} />
                 </button>
                 <button
-                  onClick={() => setActiveTransport(2)}
+                  onClick={() => setActiveTransport("bike")}
                   className={`${styles.typeOfMapTransportButton} ${
-                    activeTransport === 2 && styles.activeTransportButton
+                    activeTransport === "bike" && styles.activeTransportButton
                   }`}
                 >
                   <PiPersonSimpleBike size={30} />
                 </button>
                 <button
-                  onClick={() => setActiveTransport(3)}
+                  onClick={() => setActiveTransport("car")}
                   className={`${styles.typeOfMapTransportButton} ${
-                    activeTransport === 3 && styles.activeTransportButton
+                    activeTransport === "car" && styles.activeTransportButton
                   }`}
                 >
                   <PiCarProfile size={30} />
@@ -396,6 +411,24 @@ export const FoundCitySheet = () => {
                 </div>
               ) : (
                 <>
+                  {typeOfMap === 4 && (
+                    <>
+                      <div>
+                        <span>
+                          <FaRoad size={23} />
+                          Транспортная доступность
+                        </span>
+                        <ToggleButton
+                          name={'transport_hexes'}
+                          id={'transport_hexes'}
+                          handleToggleChange={handleToggleChange}
+                          checked={objToggles['transport_hexes']}
+                          className={toggleStyles.roads}
+                        />
+                      </div>
+                      <div className={styles.hexDivider} />
+                    </>
+                  )}
                   {haveZdrav && (
                     <div>
                       <span>

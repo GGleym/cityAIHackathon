@@ -73,7 +73,7 @@ export const MainPanel = () => {
       <div className={styles.gridPanel}>
         {[...setOfCities].filter((item) => item.toLowerCase().includes(inputValue.toLowerCase())).map(
           (item, index) =>
-            index < 100 && (
+            index < 30 && (
               <PanelSheet
                 key={index}
                 cityName={item}

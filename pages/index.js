@@ -16,7 +16,8 @@ const MapSection = () => {
   const [typeOfMap, setTypeOfMap] = useState(1);
   const [numberOfLayer, setNumberOfLayer] = useState(0);
   const [clickCoordinates, setClickCoordinates] = useState([]);
-  const [activeTransport, setActiveTransport] = useState(1);
+  const [activeTransport, setActiveTransport] = useState("foot");
+  const [layers, setLayers] = useState([]);
 
   const changeCity = useCallback(info => {
     setCityInfo(info);
@@ -46,7 +47,9 @@ const MapSection = () => {
         clickCoordinates,
         setClickCoordinates,
         activeTransport,
-        setActiveTransport
+        setActiveTransport,
+        layers,
+        setLayers
       }}
     >
       <SRMap />
