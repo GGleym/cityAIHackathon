@@ -566,7 +566,7 @@ const MainMap = () => {
           {
             layerName: 'transport_education_objects',
             layer: new ColumnLayer({
-              id: 'column-layer',
+              id: 'educationColumns',
               data: filteredEducation,
               diskResolution: 10,
               radius: 12,
@@ -584,7 +584,7 @@ const MainMap = () => {
           {
             layerName: 'transport_tourism_objects',
             layer: new ColumnLayer({
-              id: 'column-layer',
+              id: 'tourismColumns',
               data: filteredTourism,
               diskResolution: 10,
               radius: 12,
@@ -602,7 +602,7 @@ const MainMap = () => {
           {
             layerName: 'transport_zdrav_objects',
             layer: new ColumnLayer({
-              id: 'column-layer',
+              id: 'zdravColumns',
               data: filteredZdrav,
               diskResolution: 10,
               radius: 12,
