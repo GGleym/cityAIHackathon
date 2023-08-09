@@ -45,7 +45,7 @@ const MainMap = () => {
     pitch: 40
   });
   const [boundariesOfIsochron, setBoundariesOfIsochron] = useState([]);
-  const { data: roadsData } = useGetRoadsQuery(cityInfo['selectValueName']);
+  const { data: roadsData } = useGetRoadsQuery(cityInfo && cityInfo["selectValueName"]);
   const [roadsHexes, setRoadsHexes] = useState([]);
 
   useEffect(() => {
