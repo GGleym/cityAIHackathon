@@ -1,6 +1,6 @@
 import styles from '/styles/map/Map.module.css';
 import toggleStyles from '/styles/Toggle.module.css';
-import { useContext, useReducer, useState } from 'react';
+import {useContext, useEffect, useReducer, useRef, useState} from 'react';
 import { MapContext } from '../../pages';
 import { SheetsContext } from './CompoundSheets';
 import { ToggleButton } from '../toggle/ToggleButton';
@@ -43,6 +43,17 @@ export const FoundCitySheet = () => {
   } = useContext(SheetsContext);
   const [state, dispatch] = useReducer(toggleReducer, TOGGLE_INITIAL);
   const [activeButton, setActiveButton] = useState(1);
+  const scrollRef = useRef()
+
+  const scrollToBottom = () => {
+    scrollRef.current.scrollIntoView({behavior: "smooth"})
+  }
+
+  useEffect(() => {
+    if (clickCoordinates.length !== 0) {
+      scrollToBottom()
+    }
+  }, [clickCoordinates])
 
   const handleToggleChange = e => {
     if (typeOfMap === 4) {
@@ -369,7 +380,7 @@ export const FoundCitySheet = () => {
                       className={toggleStyles.education}
                     />
                   </div>
-                  <div>
+                  <div ref={scrollRef}>
                     <span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

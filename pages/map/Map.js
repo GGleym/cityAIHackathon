@@ -478,12 +478,12 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsEducation.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=124191&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
-              sizeScale: 10,
-              getSize: 4,
-              getColor: [1, 221, 160]
+              sizeScale: 12,
+              getSize: 3,
+              getColor: [1, 221, 160],
             })
           },
           {
@@ -493,10 +493,10 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsTourism.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=124191&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
-              sizeScale: 10,
+              sizeScale: 12,
               getSize: 4,
               getColor: [45, 156, 219]
             })
@@ -508,7 +508,7 @@ const MainMap = () => {
               data: objectsOfCity && objectsOfCity.objectsZdrav.features,
               pickable: true,
               iconMapping: ICON_MAPPING,
-              iconAtlas: 'https://img.icons8.com/?size=100&id=wlHxVPEvvzku&format=png',
+              iconAtlas: 'https://img.icons8.com/?size=100&id=124191&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
               sizeScale: 10,
