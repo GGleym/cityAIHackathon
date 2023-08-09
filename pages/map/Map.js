@@ -660,7 +660,7 @@ const MainMap = () => {
       <DeckGL
         initialViewState={initialViewState}
         controller={true}
-        layers={[layersOfMaps, ...layers, ...isochron, ...roadsHexes]}
+        layers={[layersOfMaps, layers, ...isochron, ...roadsHexes]}
         getTooltip={getTooltip}
         style={{ position: 'fixed' }}
         onClick={e => typeOfMap === 2 && setClickCoordinates(e.coordinate)}
