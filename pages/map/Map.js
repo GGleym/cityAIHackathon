@@ -483,7 +483,7 @@ const MainMap = () => {
               getPosition: d => d.geometry.coordinates,
               sizeScale: 12,
               getSize: 3,
-              getColor: [1, 221, 160],
+              getColor: [1, 221, 160, 211],
             })
           },
           {
@@ -496,9 +496,9 @@ const MainMap = () => {
               iconAtlas: 'https://img.icons8.com/?size=100&id=124191&format=png',
               getIcon: d => 'marker',
               getPosition: d => d.geometry.coordinates,
-              sizeScale: 12,
-              getSize: 4,
-              getColor: [45, 156, 219]
+              sizeScale: 14,
+              getSize: 3,
+              getColor: [45, 156, 219, 211]
             })
           },
           {
@@ -513,7 +513,7 @@ const MainMap = () => {
               getPosition: d => d.geometry.coordinates,
               sizeScale: 10,
               getSize: 4,
-              getColor: [252, 88, 79]
+              getColor: [252, 88, 79, 211]
             })
           }
         ];
