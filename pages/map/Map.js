@@ -57,7 +57,7 @@ const MainMap = () => {
       (async function () {
         try {
           const isochroneResult = await fetch(
-            `https://graphhopper.com/api/1/isochrone?point=${clickCoordinates[1]},${clickCoordinates[0]}&profile=${activeTransport}&time_limit=900&buckets=3&key=550ee6f2-15b2-4b89-b21e-66304e205b7a`,
+            `https://graphhopper.com/api/1/isochrone?point=${clickCoordinates[1]},${clickCoordinates[0]}&profile=${activeTransport}&time_limit=900&buckets=3&key=2a9216f2-113f-48a4-805b-81fe0ac4e12c`,
             {
               method: 'GET',
               headers: {
